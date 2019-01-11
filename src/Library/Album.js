@@ -1,0 +1,104 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { NavLink } from 'react-router-dom'
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+import axios from 'axios';
+
+
+import RecipeGrid from '../Recipe/RecipeGrid';
+
+
+const styles = theme => ({
+  appBar: {
+    position: 'relative',
+  },
+  icon: {
+    marginRight: theme.spacing.unit * 2,
+  },
+  heroUnit: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  heroContent: {
+    maxWidth: 600,
+    margin: '0 auto',
+    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+  },
+  heroButtons: {
+    marginTop: theme.spacing.unit * 4,
+  },
+  layout: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+      width: 1100,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  cardGrid: {
+    padding: `${theme.spacing.unit * 8}px 0`,
+  },
+});
+
+
+class Album extends React.Component {
+  constructor(props) {
+    super(props);
+    const { classes } = props;
+    this.classes = classes;
+    this.state = {
+      recipes: []
+    }
+    this.getRecipes();
+  }
+
+  getRecipes() {
+    axios.get(process.env.REACT_APP_API_URL +'/recipes')
+      .then(response => this.setState({recipes: response.data}));
+  }
+
+  render() {
+    console.log(this.state.recipes)
+    return (
+      <main>
+        {/* Hero unit */}
+        <div className={this.classes.heroUnit}>
+          <div className={this.classes.heroContent}>
+            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+              Your Recipes
+            </Typography>
+            <div className={this.classes.heroButtons}>
+              <Grid container spacing={16} justify="center">
+                <Grid item>
+                  <Button variant="contained" color="primary" component={NavLink} to="/create_recipe">
+                    Create new recipe!
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="outlined" color="primary">
+                    Secondary action
+                  </Button>
+                </Grid>
+              </Grid>
+            </div>
+          </div>
+        </div>
+        {/* End hero unit */}
+        <div className={classNames(this.classes.layout, this.classes.cardGrid)}>
+          <RecipeGrid recipes={this.state.recipes} />
+        </div>
+      </main>
+  )};
+}
+
+Album.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Album);
