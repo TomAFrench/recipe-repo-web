@@ -22,7 +22,7 @@ class MyFooter extends React.Component {
         Recipe Repo
       </Typography>
       <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-        Something here to give the footer a purpose!
+        Come say hello on <a href='https://github.com/recipe-repo/recipe-repo'> Github</a> !
       </Typography>
     </footer>
     )
