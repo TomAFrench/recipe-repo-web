@@ -21,7 +21,7 @@ const styles = theme => ({
     },
   },
   mainImage: {
-    width: '100px',
+    width: '1000px',
     margin: 'auto'
   },
 });
@@ -57,7 +57,7 @@ class RecipeViewer extends React.Component {
     console.log(this.state.recipe)
     var recipeImage = ""
     if ("image" in this.state.recipe) {
-      let base64String = '0'//btoa(String.fromCharCode(...this.state.recipe.image.data));
+      let base64String = btoa(String.fromCharCode(...this.state.recipe.image.data.data));
       recipeImage = <img className={this.props.classes.mainImage}
                       src={"data:image/png;base64," + base64String}/>
     }
