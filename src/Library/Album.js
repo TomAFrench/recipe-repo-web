@@ -60,7 +60,6 @@ class Album extends React.Component {
   }
 
   render() {
-    console.log(this.state.recipes)
     return (
       <main>
         {/* Hero unit */}
