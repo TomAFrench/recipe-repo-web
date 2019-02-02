@@ -42,12 +42,12 @@ class RecipeViewer extends React.Component {
   }
 
   getRecipes() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes')
+    axios.get(process.env.REACT_APP_API_URL + '/recipes')
       .then(response => this.setState({recipes: response.data}));
   }
   
   getRecipe() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes/' + this.props.match.params.id)
+    axios.get(process.env.REACT_APP_API_URL + '/recipes/' + this.props.match.params.id)
       .then(response => this.setState({recipe: response.data}));
   }
   
