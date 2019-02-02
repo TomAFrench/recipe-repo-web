@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
@@ -24,9 +23,6 @@ const styles = theme => ({
   mainImage: {
     width: '100px',
     margin: 'auto'
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
   },
 });
 
@@ -74,7 +70,7 @@ class RecipeViewer extends React.Component {
           {<RecipeDisplay recipe={this.state.recipe} />}
         </div>
         </Grid>
-      <div className={classNames(this.props.classes.layout, this.props.classes.cardGrid)}>
+      <div className={this.props.classes.layout}>
         <RecipeGrid recipes={this.state.recipes.slice(0,5)}/>
       </div>
     </React.Fragment>

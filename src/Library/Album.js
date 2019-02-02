@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { NavLink } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -40,9 +39,6 @@ const styles = theme => ({
       marginLeft: 'auto',
       marginRight: 'auto',
     },
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
   },
 });
 
@@ -90,7 +86,7 @@ class Album extends React.Component {
           </div>
         </div>
         {/* End hero unit */}
-        <div className={classNames(this.classes.layout, this.classes.cardGrid)}>
+        <div className={this.classes.layout}>
           <RecipeGrid recipes={this.state.recipes} />
         </div>
       </main>
