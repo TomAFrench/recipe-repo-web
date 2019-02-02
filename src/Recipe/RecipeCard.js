@@ -26,7 +26,8 @@ const styles = () => ({
 class RecipeCard extends React.Component {
    
   render() {
-    let base64String = '0'//btoa(String.fromCharCode(...this.props.recipe.image.data));
+    let base64String = btoa(String.fromCharCode(...this.props.recipe.image.data.data));
+    
     return (
     <Card className={this.props.classes.card}>
       <CardMedia
