@@ -172,7 +172,7 @@ class RecipeInput extends React.Component {
           </Grid>
         </Grid>
         <div className={this.props.classes.buttons}>
-            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} /*component={NavLink} to={"/hello"}*/ >
+            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} >
               Save Recipe
             </Button>
         </div>
