@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button'
 import axios from 'axios';
+import FileUploadButton from '../common/FileUploadButton';
 
 const styles = (theme) => ({
   layout: {
@@ -51,8 +52,9 @@ class RecipeInput extends React.Component {
         source_name: "",
         source_url: "",
         ingredients: "",
-        instructions: ""
-      }
+        instructions: "",
+      },
+      image: {}
     }
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSourceNameChange = this.handleSourceNameChange.bind(this);
@@ -83,9 +85,22 @@ class RecipeInput extends React.Component {
     this.setState({recipe: {...this.state.recipe, instructions: event.target.value}})
   }
 
+  handleImageChange(event) {
+    this.setState({image: event.target.files[0]})
+    this.setState({imageURL: URL.createObjectURL(event.target.files[0])})
+  }
+
   SaveNewRecipe(){
-    console.log({recipe: this.state.recipe})
-    axios.post(process.env.REACT_APP_API_URL + '/recipes', {recipe: this.state.recipe})
+    console.log(this.state.recipe);
+    let data = new FormData();
+    Object.keys(this.state.recipe).forEach(key => data.append(key, this.state.recipe[key]));
+    data.append('image', this.state.image);
+    const config = {
+      headers: {
+          'content-type': 'multipart/form-data'
+      }
+     };
+    axios.post(process.env.REACT_APP_API_URL + '/recipes', data, config)
     .then(function (response) {
       console.log(response);
     })
@@ -94,8 +109,10 @@ class RecipeInput extends React.Component {
     });
   }
 
-  render() {return (
+  render() {
+    return (
     <main className={this.props.classes.layout}>
+      <img src={this.state.imageURL}/>
       <Paper className={this.props.classes.paper}>
         <Typography variant="h6" gutterBottom>
           Create a Recipe
@@ -170,6 +187,12 @@ class RecipeInput extends React.Component {
               label="Public"
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
+              Upload
+            </FileUploadButton>
+          </Grid>
+          
         </Grid>
         <div className={this.props.classes.buttons}>
             <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} >
