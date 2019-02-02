@@ -85,7 +85,7 @@ class RecipeInput extends React.Component {
 
   SaveNewRecipe(){
     console.log({recipe: this.state.recipe})
-    axios.post('http://localhost:3000/recipes', {recipe: this.state.recipe})
+    axios.post(process.env.REACT_APP_API_URL + '/recipes', {recipe: this.state.recipe})
     .then(function (response) {
       console.log(response);
     })
