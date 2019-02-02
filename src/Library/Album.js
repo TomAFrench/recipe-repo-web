@@ -46,8 +46,6 @@ const styles = theme => ({
 class Album extends React.Component {
   constructor(props) {
     super(props);
-    const { classes } = props;
-    this.classes = classes;
     this.state = {
       recipes: []
     }
@@ -63,12 +61,12 @@ class Album extends React.Component {
     return (
       <main>
         {/* Hero unit */}
-        <div className={this.classes.heroUnit}>
-          <div className={this.classes.heroContent}>
+        <div className={this.props.classes.heroUnit}>
+          <div className={this.props.classes.heroContent}>
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               Your Recipes
             </Typography>
-            <div className={this.classes.heroButtons}>
+            <div className={this.props.classes.heroButtons}>
               <Grid container spacing={16} justify="center">
                 <Grid item>
                   <Button variant="contained" color="primary" component={NavLink} to="/create_recipe">
@@ -85,7 +83,7 @@ class Album extends React.Component {
           </div>
         </div>
         {/* End hero unit */}
-        <div className={this.classes.layout}>
+        <div className={this.props.classes.layout}>
           <RecipeGrid recipes={this.state.recipes} />
         </div>
       </main>
