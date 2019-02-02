@@ -85,13 +85,13 @@ class RecipeInput extends React.Component {
 
   SaveNewRecipe(){
     console.log({recipe: this.state.recipe})
-    axios.post('http://localhost:3000/recipes', {recipe: this.state.recipe})
+    axios.post(process.env.REACT_APP_API_URL + '/recipes', {recipe: this.state.recipe})
     .then(function (response) {
       console.log(response);
     })
     .catch(function (error) {
       console.log(error);
-    });;
+    });
   }
 
   render() {return (
@@ -108,15 +108,14 @@ class RecipeInput extends React.Component {
               name="recipeName"
               label="Recipe Name"
               fullWidth
-              autoComplete="fname"
               value={this.state.name}
               onChange={this.handleNameChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              id="source_name"
-              name="city"
+              id="sourceName"
+              name="sourceName"
               label="Recipe Source"
               fullWidth
               value={this.state.source_name}
@@ -125,8 +124,8 @@ class RecipeInput extends React.Component {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              id="source_url"
-              name="city"
+              id="sourceUrl"
+              name="sourceUrl"
               label="Source URL"
               fullWidth
               value={this.state.source_URL}
@@ -137,10 +136,9 @@ class RecipeInput extends React.Component {
             <TextField
               required
               id="ingredients"
-              name="firstName"
+              name="ingredients"
               label="Ingredients"
               fullWidth
-              autoComplete="fname"
               multiline={true}
               rows={2}
               value={this.state.ingredients}
@@ -150,11 +148,10 @@ class RecipeInput extends React.Component {
           <Grid item xs={12}>
             <TextField
               required
-              id="recipeName"
-              name="firstName"
+              id="Instructions"
+              name="Instructions"
               label="Instructions"
               fullWidth
-              autoComplete="fname"
               multiline={true}
               rows={2}
               value={this.state.instructions}
@@ -175,7 +172,7 @@ class RecipeInput extends React.Component {
           </Grid>
         </Grid>
         <div className={this.props.classes.buttons}>
-            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} /*component={NavLink} to={"/hello"}*/ >
+            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} >
               Save Recipe
             </Button>
         </div>

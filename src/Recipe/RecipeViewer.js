@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
@@ -25,19 +24,6 @@ const styles = theme => ({
     width: '100px',
     margin: 'auto'
   },
-  paper: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
-    },
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
-  },
 });
 
 class RecipeViewer extends React.Component {
@@ -52,12 +38,12 @@ class RecipeViewer extends React.Component {
   }
 
   getRecipes() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes')
+    axios.get(process.env.REACT_APP_API_URL + '/recipes')
       .then(response => this.setState({recipes: response.data}));
   }
   
   getRecipe() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes/' + this.props.match.params.id)
+    axios.get(process.env.REACT_APP_API_URL + '/recipes/' + this.props.match.params.id)
       .then(response => this.setState({recipe: response.data}));
   }
   
@@ -84,7 +70,7 @@ class RecipeViewer extends React.Component {
           {<RecipeDisplay recipe={this.state.recipe} />}
         </div>
         </Grid>
-      <div className={classNames(this.props.classes.layout, this.props.classes.cardGrid)}>
+      <div className={this.props.classes.layout}>
         <RecipeGrid recipes={this.state.recipes.slice(0,5)}/>
       </div>
     </React.Fragment>
