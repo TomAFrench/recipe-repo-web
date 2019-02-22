@@ -31,7 +31,8 @@ class RecipeViewer extends React.Component {
     super(props);
     this.state = {
       recipes: [],
-      recipe: {}
+      recipe: {},
+      image: ""
     }
     this.getRecipe();
     this.getRecipes();
@@ -44,7 +45,8 @@ class RecipeViewer extends React.Component {
   
   getRecipe() {
     axios.get(process.env.REACT_APP_API_URL + '/recipes/' + this.props.match.params.id)
-      .then(response => this.setState({recipe: response.data}));
+      .then(response => this.setState({recipe: response.data}))
+      .then(() => this.decodeImage());
   }
   
   componentWillReceiveProps(nextProps){
@@ -53,22 +55,25 @@ class RecipeViewer extends React.Component {
     this.getRecipes();
   }
 
-  arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = [].slice.call(new Uint8Array(buffer));
+  decodeImage() {
+    if ("image" in this.state.recipe) {
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(this.state.recipe.image.data.data));
 
-    bytes.forEach((b) => binary += String.fromCharCode(b));
+      bytes.forEach((b) => binary += String.fromCharCode(b));
 
-    return window.btoa(binary);
+      var recipeImage = "data:"+ this.state.recipe.image.contentType + ";base64," + window.btoa(binary)
+      this.setState({image: recipeImage})
+    }
   };
+
   render() {
     
     console.log(this.state.recipe)
     var recipeImage = ""
-    if ("image" in this.state.recipe) {
-      let base64String = this.arrayBufferToBase64(this.state.recipe.image.data.data);
+    if (this.state.image !== "") {
       recipeImage = <img className={this.props.classes.mainImage}
-                      src={"data:image/png;base64," + base64String}/>
+                      src={this.state.image}/>
     }
 
     return (

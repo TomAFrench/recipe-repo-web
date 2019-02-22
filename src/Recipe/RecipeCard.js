@@ -24,24 +24,33 @@ const styles = () => ({
 });
 
 class RecipeCard extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      image: ""
+    } 
+    this.decodeImage();
+  }
   
-  arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = [].slice.call(new Uint8Array(buffer));
+  decodeImage() {
+    if ("image" in this.props.recipe) {
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(this.props.recipe.image.data.data));
 
-    bytes.forEach((b) => binary += String.fromCharCode(b));
+      bytes.forEach((b) => binary += String.fromCharCode(b));
 
-    return window.btoa(binary);
+      var recipeImage = "data:"+ this.props.recipe.image.contentType + ";base64," + window.btoa(binary);
+      this.state = {image: recipeImage}
+    }
   };
 
   render() {
-    let base64String = this.arrayBufferToBase64(this.props.recipe.image.data.data);
-    
     return (
     <Card className={this.props.classes.card}>
       <CardMedia
         className={this.props.classes.cardMedia}
-        image={"data:image/png;base64," + base64String}
+        image={this.state.image}
         title={this.props.recipe.name}
         />
       <CardContent className={this.props.classes.cardContent}>
