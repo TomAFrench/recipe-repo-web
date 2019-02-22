@@ -24,9 +24,18 @@ const styles = () => ({
 });
 
 class RecipeCard extends React.Component {
-   
+  
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+
+    return window.btoa(binary);
+  };
+
   render() {
-    let base64String = btoa(String.fromCharCode(...this.props.recipe.image.data.data));
+    let base64String = this.arrayBufferToBase64(this.props.recipe.image.data.data);
     
     return (
     <Card className={this.props.classes.card}>

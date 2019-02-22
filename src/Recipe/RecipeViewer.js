@@ -52,12 +52,21 @@ class RecipeViewer extends React.Component {
     this.getRecipe();
     this.getRecipes();
   }
+
+  arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+
+    return window.btoa(binary);
+  };
   render() {
     
     console.log(this.state.recipe)
     var recipeImage = ""
     if ("image" in this.state.recipe) {
-      let base64String = btoa(String.fromCharCode(...this.state.recipe.image.data.data));
+      let base64String = this.arrayBufferToBase64(this.state.recipe.image.data.data);
       recipeImage = <img className={this.props.classes.mainImage}
                       src={"data:image/png;base64," + base64String}/>
     }
