@@ -21,8 +21,14 @@ const styles = theme => ({
     },
   },
   mainImage: {
-    width: '1000px',
-    margin: 'auto'
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: 500,
+    margin: 'auto',
+    marginTop: 4 * theme.spacing.unit,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      maxWidth: 1000,
+    },
   },
 });
 
