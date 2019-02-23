@@ -57,7 +57,6 @@ class RecipeDisplay extends React.Component {
       )
     }
     
-    console.log(this.props.recipe)
     return (
     <Paper className={this.props.classes.paper}>
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
