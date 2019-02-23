@@ -40,16 +40,20 @@ class RecipeViewer extends React.Component {
       recipe: {},
       image: ""
     }
+    
+  }
+
+  componentDidMount(){
     this.getRecipe();
     this.getRecipes();
   }
-
-  getRecipes() {
+  
+  async getRecipes() {
     axios.get(process.env.REACT_APP_API_URL + '/recipes')
       .then(response => this.setState({recipes: response.data}));
   }
   
-  getRecipe() {
+  async getRecipe() {
     axios.get(process.env.REACT_APP_API_URL + '/recipes/' + this.props.match.params.id)
       .then(response => this.setState({recipe: response.data}))
       .then(() => this.decodeImage());

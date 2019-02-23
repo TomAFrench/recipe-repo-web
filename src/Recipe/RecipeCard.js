@@ -28,12 +28,15 @@ class RecipeCard extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      image: ""
-    } 
+      image: '',
+    }
+  }
+  
+  componentDidMount(){
     this.decodeImage();
   }
   
-  decodeImage() {
+  async decodeImage() {
     if ("image" in this.props.recipe) {
       var binary = '';
       var bytes = [].slice.call(new Uint8Array(this.props.recipe.image.data.data));
@@ -41,7 +44,7 @@ class RecipeCard extends React.Component {
       bytes.forEach((b) => binary += String.fromCharCode(b));
 
       var recipeImage = "data:"+ this.props.recipe.image.contentType + ";base64," + window.btoa(binary);
-      this.state = {image: recipeImage}
+      this.setState({image: recipeImage})
     }
   };
 
