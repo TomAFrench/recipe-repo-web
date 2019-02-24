@@ -39,7 +39,7 @@ class IngredientsInput extends React.Component {
   }
 }
 
-IngredientEntry.propTypes = {
+IngredientsInput.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
