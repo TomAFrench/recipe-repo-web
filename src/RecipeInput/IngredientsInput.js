@@ -18,9 +18,8 @@ class IngredientsInput extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      ingredients: [],
+      ingredientKeys: [],
     }
-    
   }
 
   componentDidMount(){
@@ -35,18 +34,17 @@ class IngredientsInput extends React.Component {
    */
   getNextKey(){
     // If no ingredients, can just give key of 1
-    if (this.state.ingredients.length === 0) {
+    if (this.state.ingredientKeys.length === 0) {
       return 1
     } else {
       // Give key
-      return this.state.ingredients[this.state.ingredients.length-1].props.ingredientKey + 1;
+      return this.state.ingredientKeys[this.state.ingredientKeys.length-1] + 1;
     }
   }
 
   handleAddIngredient(event) {
     const newKey = this.getNextKey()
-    const newIngredient = <IngredientEntry key={newKey} ingredientKey={newKey} onClick={this.handleDeleteIngredient.bind(this, newKey)}/>
-    this.setState({ingredients: [...this.state.ingredients, newIngredient]});
+    this.setState({ingredientKeys: [...this.state.ingredientKeys, newKey]});
   }
   
   /**
@@ -56,14 +54,16 @@ class IngredientsInput extends React.Component {
    */
   handleDeleteIngredient(key, event) {
     // Filters out ingredient based on its key value
-    const filteredIngredients = this.state.ingredients.filter(ingredient => ingredient.props.ingredientKey !== key);
-    this.setState({ingredients: filteredIngredients});
+    const filteredIngredients = this.state.ingredientKeys.filter((val) => val !== key);
+    this.setState({ingredientKeys: filteredIngredients});
   }
 
   render() {
+    const ingredientEntries = this.state.ingredientKeys.map((key) => <IngredientEntry key={key} ingredientKey={key} onClick={this.handleDeleteIngredient.bind(this, key)}/>)
+    
     return (
     <Grid container spacing={24}>
-      {this.state.ingredients}
+      {ingredientEntries}
       <Fab color="primary" aria-label="Add" size="small" className={this.props.classes.fab} onClick={this.handleAddIngredient.bind(this)}>
         <AddIcon />
       </Fab>
