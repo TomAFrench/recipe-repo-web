@@ -75,7 +75,7 @@ class IngredientsInput extends React.Component {
     const keyString = key.toString()
     const oldIngredientEntry = this.state.ingredients[keyString]
     const newIngredientEntry = {...oldIngredientEntry, [name]: value}
-    this.setState({ingredients: {...this.state.ingredients, [keyString]: newIngredientEntry}});
+    this.setState({ingredients: {...this.state.ingredients, [keyString]: newIngredientEntry}}, () => console.log(this.state.ingredients));
   }
 
   render() {
