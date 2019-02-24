@@ -67,8 +67,14 @@ class IngredientsInput extends React.Component {
   }
 
   render() {
-    const ingredientEntries = this.state.ingredientKeys.map((key) => <IngredientEntry key={key} ingredientKey={key} handleChange={this.handleChange.bind(this, key)} onClick={this.handleDeleteIngredient.bind(this, key)}/>)
-    console.log(this.state.ingredients)
+    const ingredientEntries = this.state.ingredientKeys.map((key) => 
+      <IngredientEntry  key={key}
+                        ingredientKey={key}
+                        handleChange={this.handleChange.bind(this, key)}
+                        onClick={this.handleDeleteIngredient.bind(this, key)}
+                        />
+    )
+    
     return (
     <Grid container spacing={24}>
       {ingredientEntries}
