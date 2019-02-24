@@ -13,6 +13,12 @@ const styles = (theme) => ({
   },
 });
 
+const ingredientInitialState = {
+  quantity: 0,
+  unit: "",
+  ingredient: "",
+}
+
 class IngredientsInput extends React.Component {
 
   constructor(props) {
@@ -46,6 +52,8 @@ class IngredientsInput extends React.Component {
   handleAddIngredient(event) {
     const newKey = this.getNextKey()
     this.setState({ingredientKeys: [...this.state.ingredientKeys, newKey]});
+    // Initialise the state of the new ingredient
+    this.setState({ingredients: {...this.state.ingredients, [newKey]: ingredientInitialState}});
   }
   
   /**
@@ -70,6 +78,7 @@ class IngredientsInput extends React.Component {
     const ingredientEntries = this.state.ingredientKeys.map((key) => 
       <IngredientEntry  key={key}
                         ingredientKey={key}
+                        values={this.state.ingredients[key]}
                         handleChange={this.handleChange.bind(this, key)}
                         onClick={this.handleDeleteIngredient.bind(this, key)}
                         />

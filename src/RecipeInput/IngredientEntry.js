@@ -25,7 +25,8 @@ class IngredientEntry extends React.Component {
     this.props.handleChange(name,value);
   }
 
-  render() {return (
+  render() {
+    return (
     <Grid container spacing={24}>
       <Grid item xs={2}>
         <TextField
@@ -35,7 +36,7 @@ class IngredientEntry extends React.Component {
           fullWidth
           type="number"
           autoComplete="fname"
-          defaultValue="0"
+          value={this.props.values.quantity}
           onChange={this.handleValueChange}
         />
       </Grid>
@@ -45,6 +46,7 @@ class IngredientEntry extends React.Component {
           name="unit"
           label="Unit"
           fullWidth
+          value={this.props.values.unit}
           onChange={this.handleValueChange}
         />
       </Grid>
@@ -54,6 +56,7 @@ class IngredientEntry extends React.Component {
           id="ingredient"
           name="ingredient"
           label="ingredient"
+          value={this.props.values.ingredient}
           onChange={this.handleValueChange}
         />
       </Grid>
