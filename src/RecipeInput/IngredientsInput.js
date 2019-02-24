@@ -19,6 +19,7 @@ class IngredientsInput extends React.Component {
     super(props)
     this.state = {
       ingredientKeys: [],
+      ingredients: {}
     }
   }
 
@@ -58,9 +59,16 @@ class IngredientsInput extends React.Component {
     this.setState({ingredientKeys: filteredIngredients});
   }
 
+  handleChange(key, name, value) {
+    const keyString = key.toString()
+    const oldIngredientEntry = this.state.ingredients[keyString]
+    const newIngredientEntry = {...oldIngredientEntry, [name]: value}
+    this.setState({ingredients: {...this.state.ingredients, [keyString]: newIngredientEntry}});
+  }
+
   render() {
-    const ingredientEntries = this.state.ingredientKeys.map((key) => <IngredientEntry key={key} ingredientKey={key} onClick={this.handleDeleteIngredient.bind(this, key)}/>)
-    
+    const ingredientEntries = this.state.ingredientKeys.map((key) => <IngredientEntry key={key} ingredientKey={key} handleChange={this.handleChange.bind(this, key)} onClick={this.handleDeleteIngredient.bind(this, key)}/>)
+    console.log(this.state.ingredients)
     return (
     <Grid container spacing={24}>
       {ingredientEntries}

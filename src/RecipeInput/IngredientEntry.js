@@ -16,68 +16,45 @@ const styles = (theme) => ({
 class IngredientEntry extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: "",
-      quantity: 0,
-      unit: "",
-      note: ""
-    }
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleQuantityChange = this.handleQuantityChange.bind(this);
-    this.handleUnitChange = this.handleUnitChange.bind(this);
-    this.handleNoteChange = this.handleNoteChange.bind(this);
+    this.handleValueChange = this.handleValueChange.bind(this);
   }
 
-  handleNameChange(event) {
-    this.setState({name: event.target.value})
-  }
-
-  handleQuantityChange(event) {
-    this.setState({quantity: event.target.value})
-  }
-
-  handleUnitChange(event) {
-    this.setState({unit: event.target.value})
-  }
-
-  handleNoteChange(event) {
-    this.setState({note: event.target.value})
+  handleValueChange(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.props.handleChange(name,value);
   }
 
   render() {return (
     <Grid container spacing={24}>
       <Grid item xs={2}>
         <TextField
-          required
           id="quantity"
-          name="recipeName"
+          name="quantity"
           label="Quantity"
           fullWidth
           type="number"
           autoComplete="fname"
-          value={this.state.quantity}
-          onChange={this.handleQuantityChange}
+          defaultValue="0"
+          onChange={this.handleValueChange}
         />
       </Grid>
       <Grid item xs={2}>
         <TextField
-          required
           id="unit"
-          name="city"
+          name="unit"
           label="Unit"
           fullWidth
-          value={this.state.unit}
-          onChange={this.handleUnitChange}
+          onChange={this.handleValueChange}
         />
       </Grid>
       <Grid item xs={4} >
         <TextField
           required
-          id="name"
-          name="name"
-          label="Ingredient"
-          value={this.state.name}
-          onChange={this.handleNameChange}
+          id="ingredient"
+          name="ingredient"
+          label="ingredient"
+          onChange={this.handleValueChange}
         />
       </Grid>
       {/* <Grid item xs={4}>
