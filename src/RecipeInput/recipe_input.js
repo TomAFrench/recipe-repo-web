@@ -40,7 +40,18 @@ const styles = (theme) => ({
   button: {
     marginTop: theme.spacing.unit * 3,
     marginLeft: theme.spacing.unit,
-},
+  },
+  mainImage: {
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: 500,
+    margin: 'auto',
+    marginTop: 4 * theme.spacing.unit,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      maxWidth: 1000,
+    },
+  },
+
 });
 
 class RecipeInput extends React.Component {
@@ -112,7 +123,7 @@ class RecipeInput extends React.Component {
   render() {
     return (
     <main className={this.props.classes.layout}>
-      <img src={this.state.imageURL}/>
+      <img src={this.state.imageURL} className={this.props.classes.mainImage}/>
       <Paper className={this.props.classes.paper}>
         <Typography variant="h6" gutterBottom>
           Create a Recipe
