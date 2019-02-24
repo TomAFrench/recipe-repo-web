@@ -83,6 +83,7 @@ class IngredientEntry extends React.Component {
       </Grid>
       <Grid item xs={2}>
         <TextField
+          required
           id="unit"
           name="city"
           label="Unit"
@@ -91,22 +92,21 @@ class IngredientEntry extends React.Component {
           onChange={this.handleUnitChange}
         />
       </Grid>
-      <Grid item xs={8} >
+      <Grid item xs={4} >
         <TextField
+          required
           id="name"
           name="name"
           label="Ingredient"
-          fullWidt
           value={this.state.name}
           onChange={this.handleNameChange}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={4}>
         <TextField
           id="note"
           name="note"
           label="Note"
-          fullWidth
           autoComplete="fname"
           value={this.state.note}
           onChange={this.handleNoteChange}
