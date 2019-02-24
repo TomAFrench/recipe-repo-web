@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 
-import IngredientEntry from './IngredientEntry'
+import IngredientsInput from './IngredientsInput'
 
 import Button from '@material-ui/core/Button'
 import axios from 'axios';
@@ -200,7 +200,7 @@ class RecipeInput extends React.Component {
               label="Public"
             />
           </Grid>
-          <IngredientEntry />
+          <IngredientsInput />
           <Grid item xs={12} sm={6}>
             <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
               Upload
