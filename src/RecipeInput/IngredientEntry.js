@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = (theme) => ({
   layout: {
@@ -112,6 +114,9 @@ class IngredientEntry extends React.Component {
           onChange={this.handleNoteChange}
         />
       </Grid> */}
+      <IconButton className={this.props.classes.button} aria-label="Delete" onClick={this.props.onClick}>
+        <DeleteIcon />
+      </IconButton>
     </Grid>
   )
   }
