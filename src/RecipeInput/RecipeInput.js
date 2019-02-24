@@ -12,7 +12,7 @@ import IngredientsInput from './IngredientsInput'
 
 import Button from '@material-ui/core/Button'
 import axios from 'axios';
-import FileUploadButton from '../common/FileUploadButton';
+import FileUploadButton from '../RecipeInput/FileUploadButton';
 
 const styles = (theme) => ({
   layout: {
@@ -86,16 +86,17 @@ class RecipeInput extends React.Component {
   }
 
   SaveNewRecipe(){
-    console.log(this.state.recipe);
     let data = new FormData();
     Object.keys(this.state.recipe).forEach(key => data.append(key, this.state.recipe[key]));
     data.set("ingredients", JSON.stringify(Object.values(this.state.recipe.ingredients)));
     data.append('image', this.state.image);
+
     const config = {
       headers: {
           'content-type': 'multipart/form-data'
       }
      };
+
     axios.post(process.env.REACT_APP_API_URL + '/recipes', data, config)
     .then(function (response) {
       console.log(response);
