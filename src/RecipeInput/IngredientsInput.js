@@ -2,15 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import Typography from '@material-ui/core/Typography';
+
 
 import IngredientEntry from './IngredientEntry';
 
 const styles = (theme) => ({
-  fab: {
-    margin: theme.spacing.unit,
-  },
+
 });
 
 const ingredientInitialState = {
@@ -79,22 +77,38 @@ class IngredientsInput extends React.Component {
 
   }
 
-  render() {
+  renderIngredients(){
     const ingredientEntries = this.state.ingredientKeys.map((key) => 
       <IngredientEntry  key={key}
                         ingredientKey={key}
                         values={this.state.ingredients[key]}
                         handleChange={this.handleChange.bind(this, key)}
                         onClick={this.handleDeleteIngredient.bind(this, key)}
+                        lastItem={false}
                         />
     )
-    
+    const lastKey = this.state.ingredientKeys[this.state.ingredientKeys.length - 1]
+    ingredientEntries[ingredientEntries.length - 1] = (
+      <IngredientEntry  key={lastKey}
+                        ingredientKey={lastKey}
+                        values={this.state.ingredients[lastKey]}
+                        handleChange={this.handleChange.bind(this, lastKey)}
+                        onClick={this.handleAddIngredient.bind(this)}
+                        lastItem={true}
+                        />
+    )
+    return ingredientEntries
+  }
+
+  render() {
     return (
     <Grid container spacing={24}>
-      {ingredientEntries}
-      <Fab color="primary" aria-label="Add" size="small" className={this.props.classes.fab} onClick={this.handleAddIngredient.bind(this)}>
-        <AddIcon />
-      </Fab>
+      <Grid item xs={12}>
+        <Typography variant="subtitle1" color="textSecondary" inline>
+          Ingredients
+        </Typography>
+      </Grid>
+      {this.renderIngredients()}
     </Grid>
   )
   }

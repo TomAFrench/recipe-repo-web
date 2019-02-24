@@ -5,6 +5,9 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 
 const styles = (theme) => ({
   button: {
@@ -27,7 +30,7 @@ class IngredientEntry extends React.Component {
 
   render() {
     return (
-    <Grid container spacing={24}>
+    <React.Fragment>
       <Grid item xs={2}>
         <TextField
           id="quantity"
@@ -50,7 +53,7 @@ class IngredientEntry extends React.Component {
           onChange={this.handleValueChange}
         />
       </Grid>
-      <Grid item xs={4} >
+      <Grid item xs={6} >
         <TextField
           required
           id="ingredient"
@@ -70,10 +73,15 @@ class IngredientEntry extends React.Component {
           onChange={this.handleNoteChange}
         />
       </Grid> */}
-      <IconButton className={this.props.classes.button} aria-label="Delete" onClick={this.props.onClick}>
-        <DeleteIcon />
-      </IconButton>
-    </Grid>
+      {(this.props.lastItem === true)
+          ? <Fab color="primary" aria-label="Add" size="small" className={this.props.classes.button} onClick={this.props.onClick} >
+              <AddIcon />
+            </Fab>
+          : <IconButton className={this.props.classes.button} aria-label="Delete" onClick={this.props.onClick}>
+              <DeleteIcon />
+            </IconButton>
+      }
+    </React.Fragment>
   )
   }
 }

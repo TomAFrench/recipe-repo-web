@@ -163,7 +163,9 @@ class RecipeInput extends React.Component {
               onChange={this.handleSourceURLChange}
             />
           </Grid>
-          <IngredientsInput handleChange={this.handleIngredientsChange}/>
+          <Grid item xs={12}>
+            <IngredientsInput handleChange={this.handleIngredientsChange}/>
+          </Grid>
           <Grid item xs={12}>
             <TextField
               required
@@ -189,7 +191,6 @@ class RecipeInput extends React.Component {
               label="Public"
             />
           </Grid>
-          
           <Grid item xs={12} sm={6}>
             <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
               Upload
