@@ -21,8 +21,14 @@ const styles = theme => ({
     },
   },
   mainImage: {
-    width: '100px',
-    margin: 'auto'
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: 500,
+    margin: 'auto',
+    marginTop: 4 * theme.spacing.unit,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      maxWidth: 1000,
+    },
   },
 });
 
@@ -31,20 +37,26 @@ class RecipeViewer extends React.Component {
     super(props);
     this.state = {
       recipes: [],
-      recipe: {}
+      recipe: {},
+      image: ""
     }
+    
+  }
+
+  componentDidMount(){
     this.getRecipe();
     this.getRecipes();
   }
-
-  getRecipes() {
+  
+  async getRecipes() {
     axios.get(process.env.REACT_APP_API_URL + '/recipes')
       .then(response => this.setState({recipes: response.data}));
   }
   
-  getRecipe() {
+  async getRecipe() {
     axios.get(process.env.REACT_APP_API_URL + '/recipes/' + this.props.match.params.id)
-      .then(response => this.setState({recipe: response.data}));
+      .then(response => this.setState({recipe: response.data}))
+      .then(() => this.decodeImage());
   }
   
   componentWillReceiveProps(nextProps){
@@ -52,14 +64,24 @@ class RecipeViewer extends React.Component {
     this.getRecipe();
     this.getRecipes();
   }
-  render() {
-    
-    console.log(this.state.recipe)
-    var recipeImage = ""
+
+  decodeImage() {
     if ("image" in this.state.recipe) {
-      let base64String = '0'//btoa(String.fromCharCode(...this.state.recipe.image.data));
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(this.state.recipe.image.data.data));
+
+      bytes.forEach((b) => binary += String.fromCharCode(b));
+
+      var recipeImage = "data:"+ this.state.recipe.image.contentType + ";base64," + window.btoa(binary)
+      this.setState({image: recipeImage})
+    }
+  };
+
+  render() {
+    var recipeImage = ""
+    if (this.state.image !== "") {
       recipeImage = <img className={this.props.classes.mainImage}
-                      src={"data:image/png;base64," + base64String}/>
+                      src={this.state.image}/>
     }
 
     return (

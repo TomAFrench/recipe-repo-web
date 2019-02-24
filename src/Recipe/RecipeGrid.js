@@ -16,7 +16,7 @@ class RecipeGrid extends React.Component {
       <Grid container spacing={40} className={this.props.classes.cardGrid}>
         {this.props.recipes.map(recipe =>
           (
-          <Grid item key={recipe._id} sm={3} md={3}>
+          <Grid item key={recipe._id} xs={6} sm={3} >
             <RecipeCard recipe={recipe} />
           </Grid>
           ))
