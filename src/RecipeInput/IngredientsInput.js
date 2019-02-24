@@ -63,8 +63,12 @@ class IngredientsInput extends React.Component {
    */
   handleDeleteIngredient(key, event) {
     // Filters out ingredient based on its key value
-    const filteredIngredients = this.state.ingredientKeys.filter((val) => val !== key);
-    this.setState({ingredientKeys: filteredIngredients});
+    const filteredIngredientKeys = this.state.ingredientKeys.filter((val) => val !== key);
+    this.setState({ingredientKeys: filteredIngredientKeys});
+
+    const state = {...this.state.ingredients};
+    delete state[key]
+    this.setState({ingredients: state});
   }
 
   handleChange(key, name, value) {
