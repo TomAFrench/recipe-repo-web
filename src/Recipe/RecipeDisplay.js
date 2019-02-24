@@ -37,37 +37,52 @@ const styles = theme => ({
 
 class RecipeDisplay extends React.Component {
 
+  renderSource(sourceName, sourceUrl){
+    if (sourceName === undefined){
+      console.log("hi", sourceName, sourceUrl)
+      return null
+    }
+
+    var sourceText = (
+      <Typography variant="h6" align="center" color="textSecondary">
+          {sourceName}        
+      </Typography>
+      )
+
+    // If source has associated url then make it a link
+    if (sourceUrl != null){
+      sourceText = (
+      <Typography variant="h6" align="center" color="textSecondary" component="a" href={sourceUrl} style={{textDecoration: 'none'}}>
+          {sourceName}        
+      </Typography>
+      )
+    }
+
+    return (
+      <div>
+      <Typography variant="h6" align="center" color="textSecondary">
+        A recipe by
+      </Typography>
+      {sourceText}
+      </div>
+    )
+  }
+    
+
   render() {
     //Chill for a second if there is no recipe yet
     if (!("name" in this.props.recipe)) {
       return null
     }
 
-    var source = (
-      <Typography display='inline' variant="h6" align="center" color="textSecondary" paragraph>
-        {this.props.recipe.source_name}
-      </Typography>
-    )
-    // Check if source has associated url before making a link
-    if ("source_url" in this.props.recipe){
-      source = (
-      <a style={{marginLeft:7, textDecoration: 'none'}} href={this.props.recipe.source_url} >
-        {source}
-      </a>
-      )
-    }
     
+
     return (
     <Paper className={this.props.classes.paper}>
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
         {this.props.recipe.name}
       </Typography>
-      <div style={{display:"flex"}}>
-        <Typography display='inline' variant="h6" align="center" color="textSecondary" paragraph>
-          A recipe by
-        </Typography>
-        {source}
-      </div>
+      {this.renderSource(this.props.recipe.source_name, this.props.recipe.source_url)}
       <Typography display='inline' variant="h6" color="textSecondary" paragraph>
           This is a description of the recipe.
       </Typography>
