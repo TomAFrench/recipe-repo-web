@@ -8,6 +8,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 
+import IngredientsInput from './IngredientsInput'
+
 import Button from '@material-ui/core/Button'
 import axios from 'axios';
 import FileUploadButton from '../common/FileUploadButton';
@@ -62,7 +64,7 @@ class RecipeInput extends React.Component {
         name: "",
         source_name: "",
         source_url: "",
-        ingredients: "",
+        ingredients: {},
         instructions: "",
       },
       image: {}
@@ -88,8 +90,8 @@ class RecipeInput extends React.Component {
     this.setState({recipe: {...this.state.recipe, source_url: event.target.value}})
   }
 
-  handleIngredientsChange(event) {
-    this.setState({recipe: {...this.state.recipe, ingredients: event.target.value}})
+  handleIngredientsChange(ingredients) {
+    this.setState({recipe: {...this.state.recipe, ingredients: ingredients}}, () => console.log(this.state.recipe.ingredients))
   }
 
   handleInstructionsChange(event) {
@@ -105,6 +107,7 @@ class RecipeInput extends React.Component {
     console.log(this.state.recipe);
     let data = new FormData();
     Object.keys(this.state.recipe).forEach(key => data.append(key, this.state.recipe[key]));
+    data.set("ingredients", JSON.stringify(Object.values(this.state.recipe.ingredients)));
     data.append('image', this.state.image);
     const config = {
       headers: {
@@ -161,17 +164,7 @@ class RecipeInput extends React.Component {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              required
-              id="ingredients"
-              name="ingredients"
-              label="Ingredients"
-              fullWidth
-              multiline={true}
-              rows={2}
-              value={this.state.ingredients}
-              onChange={this.handleIngredientsChange}
-            />
+            <IngredientsInput handleChange={this.handleIngredientsChange}/>
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -203,7 +196,6 @@ class RecipeInput extends React.Component {
               Upload
             </FileUploadButton>
           </Grid>
-          
         </Grid>
         <div className={this.props.classes.buttons}>
             <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} >

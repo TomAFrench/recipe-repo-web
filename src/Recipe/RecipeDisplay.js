@@ -67,16 +67,21 @@ class RecipeDisplay extends React.Component {
       </div>
     )
   }
-    
+  
+  renderIngredients() {
+    return this.props.recipe.ingredients.map((ingredient) => (
+      <Typography display='inline' variant="h6" color="textSecondary" paragraph>
+        {ingredient.quantity} {ingredient.unit} {ingredient.ingredient}
+      </Typography>
+    ))
+  }
 
   render() {
     //Chill for a second if there is no recipe yet
     if (!("name" in this.props.recipe)) {
       return null
     }
-
-    
-
+    this.renderIngredients()
     return (
     <Paper className={this.props.classes.paper}>
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -89,9 +94,7 @@ class RecipeDisplay extends React.Component {
       <Typography display='inline' variant="h6" color="textPrimary" paragraph>
         Ingredients:
       </Typography>
-      <Typography display='inline' variant="h6" color="textSecondary" paragraph>
-        {this.props.recipe.ingredients}
-      </Typography>
+      {this.renderIngredients()}
       <Typography display='inline' variant="h6" color="textPrimary" paragraph>
         Instructions:
       </Typography>
