@@ -102,7 +102,7 @@ class IngredientEntry extends React.Component {
           onChange={this.handleNameChange}
         />
       </Grid>
-      <Grid item xs={4}>
+      {/* <Grid item xs={4}>
         <TextField
           id="note"
           name="note"
@@ -111,7 +111,7 @@ class IngredientEntry extends React.Component {
           value={this.state.note}
           onChange={this.handleNoteChange}
         />
-      </Grid>
+      </Grid> */}
     </Grid>
   )
   }
