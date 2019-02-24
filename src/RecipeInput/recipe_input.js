@@ -64,7 +64,7 @@ class RecipeInput extends React.Component {
         name: "",
         source_name: "",
         source_url: "",
-        ingredients: "",
+        ingredients: {},
         instructions: "",
       },
       image: {}
@@ -90,8 +90,8 @@ class RecipeInput extends React.Component {
     this.setState({recipe: {...this.state.recipe, source_url: event.target.value}})
   }
 
-  handleIngredientsChange(event) {
-    this.setState({recipe: {...this.state.recipe, ingredients: event.target.value}})
+  handleIngredientsChange(ingredients) {
+    this.setState({recipe: {...this.state.recipe, ingredients: ingredients}}, () => console.log(this.state.recipe.ingredients))
   }
 
   handleInstructionsChange(event) {
@@ -107,6 +107,7 @@ class RecipeInput extends React.Component {
     console.log(this.state.recipe);
     let data = new FormData();
     Object.keys(this.state.recipe).forEach(key => data.append(key, this.state.recipe[key]));
+    data.set("ingredients", JSON.stringify(Object.values(this.state.recipe.ingredients)));
     data.append('image', this.state.image);
     const config = {
       headers: {
@@ -162,19 +163,7 @@ class RecipeInput extends React.Component {
               onChange={this.handleSourceURLChange}
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="ingredients"
-              name="ingredients"
-              label="Ingredients"
-              fullWidth
-              multiline={true}
-              rows={2}
-              value={this.state.ingredients}
-              onChange={this.handleIngredientsChange}
-            />
-          </Grid>
+          <IngredientsInput handleChange={this.handleIngredientsChange}/>
           <Grid item xs={12}>
             <TextField
               required
@@ -200,7 +189,7 @@ class RecipeInput extends React.Component {
               label="Public"
             />
           </Grid>
-          <IngredientsInput />
+          
           <Grid item xs={12} sm={6}>
             <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
               Upload
