@@ -22,7 +22,7 @@ class MyFooter extends React.Component {
         Recipe Repo
       </Typography>
       <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-        Come say hello on <a href='https://github.com/recipe-repo/recipe-repo'> Github</a> !
+        Come say hello on <a href='https://github.com/recipe-repo/recipe-repo' style={{textDecoration: 'none', color: 'grey'}}> Github</a>!
       </Typography>
     </footer>
     )
