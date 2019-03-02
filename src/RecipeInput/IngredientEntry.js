@@ -50,6 +50,7 @@ class IngredientEntry extends React.Component {
           fullWidth
           type="number"
           autoComplete="fname"
+          variant='outlined'
           value={this.props.values.quantity}
           onChange={this.handleValueChange}
         />
@@ -60,6 +61,7 @@ class IngredientEntry extends React.Component {
           name="unit"
           label="Unit"
           fullWidth
+          variant='outlined'
           value={this.props.values.unit}
           onChange={this.handleValueChange}
         />
@@ -70,6 +72,7 @@ class IngredientEntry extends React.Component {
           id="ingredient"
           name="ingredient"
           label="ingredient"
+          variant='outlined'
           value={this.props.values.ingredient}
           onChange={this.handleValueChange}
         />

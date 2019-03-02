@@ -122,6 +122,7 @@ class RecipeInput extends React.Component {
               name="name"
               label="Recipe Name"
               fullWidth
+              variant='outlined'
               value={this.state.name}
               onChange={this.handleRecipeChange.bind(this)}
             />
@@ -132,6 +133,7 @@ class RecipeInput extends React.Component {
               name="sourceName"
               label="Recipe Source"
               fullWidth
+              variant='outlined'
               value={this.state.sourceName}
               onChange={this.handleRecipeChange.bind(this)}
             />
@@ -142,6 +144,7 @@ class RecipeInput extends React.Component {
               name="sourceUrl"
               label="Source URL"
               fullWidth
+              variant='outlined'
               value={this.state.sourceUrl}
               onChange={this.handleRecipeChange.bind(this)}
             />
@@ -157,7 +160,8 @@ class RecipeInput extends React.Component {
               label="Instructions"
               fullWidth
               multiline={true}
-              rows={2}
+              rowsMax={20}
+              variant='outlined'
               value={this.state.instructions}
               onChange={this.handleRecipeChange.bind(this)}
             />
