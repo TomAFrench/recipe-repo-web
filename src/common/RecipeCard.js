@@ -31,11 +31,11 @@ class RecipeCard extends React.Component {
       image: '',
     }
   }
-  
+
   componentDidMount(){
     this.decodeImage();
   }
-  
+
   async decodeImage() {
     if ("image" in this.props.recipe) {
       var binary = '';
@@ -66,7 +66,7 @@ class RecipeCard extends React.Component {
       </CardContent>
       <CardActions>
         <Button size="small" color="primary" component={NavLink} to={`/recipe/${this.props.recipe._id}`}>
-          View 
+          View
         </Button>
       </CardActions>
     </Card>

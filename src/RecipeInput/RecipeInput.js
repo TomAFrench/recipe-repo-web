@@ -12,7 +12,7 @@ import IngredientsInput from './IngredientsInput'
 
 import Button from '@material-ui/core/Button'
 import axios from 'axios';
-import FileUploadButton from '../common/FileUploadButton';
+import FileUploadButton from '../RecipeInput/FileUploadButton';
 
 const styles = (theme) => ({
   layout: {
@@ -62,40 +62,22 @@ class RecipeInput extends React.Component {
     this.state = {
       recipe: {
         name: "",
-        source_name: "",
-        source_url: "",
+        sourceName: "",
+        sourceUrl: "",
         ingredients: {},
         instructions: "",
       },
       image: {}
     }
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleSourceNameChange = this.handleSourceNameChange.bind(this);
-    this.handleSourceURLChange = this.handleSourceURLChange.bind(this);
-    this.handleIngredientsChange = this.handleIngredientsChange.bind(this);
-    this.handleInstructionsChange = this.handleInstructionsChange.bind(this);
-
-    this.SaveNewRecipe = this.SaveNewRecipe.bind(this);
   }
 
-  handleNameChange(event) {
-    this.setState({recipe: {...this.state.recipe, name: event.target.value}})
-  }
-
-  handleSourceNameChange(event) {
-    this.setState({recipe: {...this.state.recipe, source_name: event.target.value}})
-  }
-
-  handleSourceURLChange(event) {
-    this.setState({recipe: {...this.state.recipe, source_url: event.target.value}})
-  }
 
   handleIngredientsChange(ingredients) {
     this.setState({recipe: {...this.state.recipe, ingredients: ingredients}}, () => console.log(this.state.recipe.ingredients))
   }
 
-  handleInstructionsChange(event) {
-    this.setState({recipe: {...this.state.recipe, instructions: event.target.value}})
+  handleRecipeChange(event) {
+    this.setState({recipe: {...this.state.recipe, [event.target.name]: event.target.value}})
   }
 
   handleImageChange(event) {
@@ -104,16 +86,17 @@ class RecipeInput extends React.Component {
   }
 
   SaveNewRecipe(){
-    console.log(this.state.recipe);
     let data = new FormData();
     Object.keys(this.state.recipe).forEach(key => data.append(key, this.state.recipe[key]));
     data.set("ingredients", JSON.stringify(Object.values(this.state.recipe.ingredients)));
     data.append('image', this.state.image);
+
     const config = {
       headers: {
           'content-type': 'multipart/form-data'
       }
      };
+
     axios.post(process.env.REACT_APP_API_URL + '/recipes', data, config)
     .then(function (response) {
       console.log(response);
@@ -126,7 +109,7 @@ class RecipeInput extends React.Component {
   render() {
     return (
     <main className={this.props.classes.layout}>
-      <img src={this.state.imageURL} className={this.props.classes.mainImage}/>
+      <img src={this.state.imageURL} alt="" className={this.props.classes.mainImage}/>
       <Paper className={this.props.classes.paper}>
         <Typography variant="h6" gutterBottom>
           Create a Recipe
@@ -135,12 +118,13 @@ class RecipeInput extends React.Component {
           <Grid item xs={12}>
             <TextField
               required
-              id="recipeName"
-              name="recipeName"
+              id="name"
+              name="name"
               label="Recipe Name"
               fullWidth
+              variant='outlined'
               value={this.state.name}
-              onChange={this.handleNameChange}
+              onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -149,8 +133,9 @@ class RecipeInput extends React.Component {
               name="sourceName"
               label="Recipe Source"
               fullWidth
-              value={this.state.source_name}
-              onChange={this.handleSourceNameChange}
+              variant='outlined'
+              value={this.state.sourceName}
+              onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -159,24 +144,26 @@ class RecipeInput extends React.Component {
               name="sourceUrl"
               label="Source URL"
               fullWidth
-              value={this.state.source_URL}
-              onChange={this.handleSourceURLChange}
+              variant='outlined'
+              value={this.state.sourceUrl}
+              onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
           <Grid item xs={12}>
-            <IngredientsInput handleChange={this.handleIngredientsChange}/>
+            <IngredientsInput handleChange={this.handleIngredientsChange.bind(this)}/>
           </Grid>
           <Grid item xs={12}>
             <TextField
               required
-              id="Instructions"
-              name="Instructions"
+              id="instructions"
+              name="instructions"
               label="Instructions"
               fullWidth
               multiline={true}
-              rows={2}
+              rowsMax={20}
+              variant='outlined'
               value={this.state.instructions}
-              onChange={this.handleInstructionsChange}
+              onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -198,7 +185,7 @@ class RecipeInput extends React.Component {
           </Grid>
         </Grid>
         <div className={this.props.classes.buttons}>
-            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe} >
+            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe.bind(this)} >
               Save Recipe
             </Button>
         </div>

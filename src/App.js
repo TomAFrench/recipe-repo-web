@@ -3,12 +3,9 @@ import { Route } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Album from './Library/Album';
 import RecipeViewer from './Recipe/RecipeViewer';
-import RecipeInput from './RecipeInput/recipe_input';
+import RecipeInput from './RecipeInput/RecipeInput';
 import PrimarySearchAppBar from './common/Appbar';
 import MyFooter from './common/Footer';
-
-
-
 
 class App extends Component {
 

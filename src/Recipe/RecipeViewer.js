@@ -81,7 +81,8 @@ class RecipeViewer extends React.Component {
     var recipeImage = ""
     if (this.state.image !== "") {
       recipeImage = <img className={this.props.classes.mainImage}
-                      src={this.state.image}/>
+                      src={this.state.image}
+                      alt=""/>
     }
 
     return (

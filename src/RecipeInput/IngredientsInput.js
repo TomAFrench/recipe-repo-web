@@ -104,7 +104,7 @@ class IngredientsInput extends React.Component {
     return (
     <Grid container spacing={24}>
       <Grid item xs={12}>
-        <Typography variant="subtitle1" color="textSecondary" inline>
+        <Typography variant="subtitle1" color="textSecondary" inline="true">
           Ingredients
         </Typography>
       </Grid>
