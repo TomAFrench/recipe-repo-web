@@ -109,7 +109,7 @@ class RecipeInput extends React.Component {
   render() {
     return (
     <main className={this.props.classes.layout}>
-      <img src={this.state.imageURL} className={this.props.classes.mainImage}/>
+      <img src={this.state.imageURL} alt="" className={this.props.classes.mainImage}/>
       <Paper className={this.props.classes.paper}>
         <Typography variant="h6" gutterBottom>
           Create a Recipe
