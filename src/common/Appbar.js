@@ -6,7 +6,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -14,11 +13,10 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import FastfoodIcon from '@material-ui/icons/Fastfood'
+import SidebarDrawer from './SidebarDrawer';
 
 const styles = theme => ({
   root: {
@@ -95,7 +93,16 @@ class PrimarySearchAppBar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    sideAnchorEl: null
   };
+
+  handleSideMenuOpen(event) {
+    this.setState({ sideAnchorEl: event.currentTarget })
+  }
+
+  handleSideMenuClose() {
+    this.setState({ sideAnchorEl: null });
+  }
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -115,10 +122,18 @@ class PrimarySearchAppBar extends React.Component {
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const { anchorEl, mobileMoreAnchorEl, sideAnchorEl } = this.state;
     const { classes } = this.props;
+    const isSideMenuOpen = Boolean(sideAnchorEl)
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const renderSideMenu = (
+      <SidebarDrawer
+        open={isSideMenuOpen}
+        handleClose={this.handleSideMenuClose.bind(this)}
+      />
+    )
 
     const renderMenu = (
       <Menu
@@ -141,22 +156,6 @@ class PrimarySearchAppBar extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={11} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem>
         <MenuItem onClick={this.handleProfileMenuOpen}>
           <IconButton color="inherit">
             <AccountCircle />
@@ -170,7 +169,7 @@ class PrimarySearchAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
+            <IconButton className={classes.menuButton} onClick={this.handleSideMenuOpen.bind(this)} color="inherit" aria-label="Open drawer">
               <MenuIcon />
             </IconButton>
             <FastfoodIcon/>
@@ -209,6 +208,7 @@ class PrimarySearchAppBar extends React.Component {
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
+        {renderSideMenu}
       </div>
     );
   }
