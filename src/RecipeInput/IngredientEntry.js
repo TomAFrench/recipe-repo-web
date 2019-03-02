@@ -49,7 +49,6 @@ class IngredientEntry extends React.Component {
           label="Quantity"
           fullWidth
           type="number"
-          autoComplete="fname"
           variant='outlined'
           value={this.props.values.quantity}
           onChange={this.handleValueChange}
