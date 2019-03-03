@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import RecipeDisplay from './RecipeDisplay';
 import RecipeGrid from './RecipeGrid';
 
-import axios from 'axios';
+import repoAPI from '../RecipeAPI';
 
 const styles = theme => ({
   layout: {
@@ -49,12 +49,12 @@ class RecipeViewer extends React.Component {
   }
   
   async getRecipes() {
-    const response = await axios.get(process.env.REACT_APP_API_URL + '/recipes');
+    const response = await repoAPI.getRecipes();
     this.setState({recipes: response.data});
   }
   
   async getRecipe(recipe_id) {
-    const response = await axios.get(process.env.REACT_APP_API_URL + '/recipes/' + recipe_id);
+    const response = await repoAPI.getRecipe(recipe_id);
     this.setState({recipe: response.data});
     if ("image" in response.data){
       this.decodeImage(response.data.image);

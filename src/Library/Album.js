@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-import axios from 'axios';
+import repoAPI from '../RecipeAPI';
 
 
 import RecipeGrid from '../Recipe/RecipeGrid';
@@ -49,9 +49,9 @@ class Album extends React.Component {
     this.getRecipes();
   }
 
-  getRecipes() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes')
-      .then(response => this.setState({recipes: response.data}));
+  async getRecipes() {
+    const response = await repoAPI.getRecipes();
+    this.setState({recipes: response.data});
   }
 
   render() {
