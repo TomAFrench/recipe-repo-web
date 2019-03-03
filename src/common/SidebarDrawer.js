@@ -39,7 +39,7 @@ class SidebarDrawer extends React.Component {
             <ListItemIcon><SettingsIcon /></ListItemIcon>
             <ListItemText primary={'Settings'} />
           </ListItem>
-          <ListItem button key={'About Recipe Repo'}>
+          <ListItem button key={'About Recipe Repo'} component="a" href={process.env.REACT_APP_GITHUB_URL}>
             <ListItemIcon><InfoIcon /></ListItemIcon>
             <ListItemText primary={'About Recipe Repo'} />
           </ListItem>
