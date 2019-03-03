@@ -77,11 +77,6 @@ class RecipeDisplay extends React.Component {
   }
 
   render() {
-    //Chill for a second if there is no recipe yet
-    if (!("name" in this.props.recipe)) {
-      return null
-    }
-    this.renderIngredients()
     return (
     <Paper className={this.props.classes.paper}>
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>

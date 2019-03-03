@@ -44,37 +44,37 @@ class RecipeViewer extends React.Component {
   }
 
   componentDidMount(){
-    this.getRecipe();
+    this.getRecipe(this.props.match.params.id);
     this.getRecipes();
   }
   
   async getRecipes() {
-    axios.get(process.env.REACT_APP_API_URL + '/recipes')
-      .then(response => this.setState({recipes: response.data}));
+    const response = await axios.get(process.env.REACT_APP_API_URL + '/recipes');
+    this.setState({recipes: response.data});
   }
   
-  async getRecipe() {
-    axios.get(process.env.REACT_APP_API_URL + '/recipes/' + this.props.match.params.id)
-      .then(response => this.setState({recipe: response.data}))
-      .then(() => this.decodeImage());
+  async getRecipe(recipe_id) {
+    const response = await axios.get(process.env.REACT_APP_API_URL + '/recipes/' + recipe_id);
+    this.setState({recipe: response.data});
+    if ("image" in response.data){
+      this.decodeImage(response.data.image);
+    }
   }
   
   componentWillReceiveProps(nextProps){
     //Update the shown recipes if we move to a new page
-    this.getRecipe();
+    this.getRecipe(nextProps.match.params.id);
     this.getRecipes();
   }
 
-  decodeImage() {
-    if ("image" in this.state.recipe) {
-      var binary = '';
-      var bytes = [].slice.call(new Uint8Array(this.state.recipe.image.data.data));
+  async decodeImage(image) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(image.data.data));
 
-      bytes.forEach((b) => binary += String.fromCharCode(b));
+    bytes.forEach((b) => binary += String.fromCharCode(b));
 
-      var recipeImage = "data:"+ this.state.recipe.image.contentType + ";base64," + window.btoa(binary)
-      this.setState({image: recipeImage})
-    }
+    var recipeImage = "data:"+ image.contentType + ";base64," + window.btoa(binary)
+    this.setState({image: recipeImage})
   };
 
   render() {
@@ -85,12 +85,16 @@ class RecipeViewer extends React.Component {
                       alt=""/>
     }
 
+    const recipeDisplay = ('name' in this.state.recipe
+                           ? <RecipeDisplay recipe={this.state.recipe} />
+                           : ""
+                          )
     return (
     <React.Fragment>
       <Grid container spacing={24}>
         <div className={this.props.classes.layout}>
           {recipeImage}
-          {<RecipeDisplay recipe={this.state.recipe} />}
+          {recipeDisplay}
         </div>
         </Grid>
       <div className={this.props.classes.layout}>
