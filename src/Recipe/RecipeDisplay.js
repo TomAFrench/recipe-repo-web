@@ -6,20 +6,6 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
-      width: 1000,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  },
-  mainImage: {
-    width: '100px',
-    margin: 'auto'
-  },
   paper: {
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 3,
@@ -29,9 +15,6 @@ const styles = theme => ({
       marginBottom: theme.spacing.unit * 6,
       padding: theme.spacing.unit * 3,
     },
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
   },
 });
 

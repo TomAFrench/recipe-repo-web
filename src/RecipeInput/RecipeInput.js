@@ -161,13 +161,11 @@ class RecipeInput extends React.Component {
               label="Public"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
-              Upload
-            </FileUploadButton>
-          </Grid>
         </Grid>
         <div className={this.props.classes.buttons}>
+            <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
+              Upload Image
+            </FileUploadButton>
             <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe.bind(this)} >
               Save Recipe
             </Button>
