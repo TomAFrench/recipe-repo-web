@@ -66,9 +66,6 @@ class RecipeDisplay extends React.Component {
         {this.props.recipe.name}
       </Typography>
       {this.renderSource(this.props.recipe.source_name, this.props.recipe.source_url)}
-      <Typography display='inline' variant="h6" color="textSecondary" paragraph>
-          This is a description of the recipe.
-      </Typography>
       <Typography display='inline' variant="h6" color="textPrimary" paragraph>
         Ingredients:
       </Typography>

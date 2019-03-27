@@ -4,8 +4,6 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 
 import IngredientsInput from './IngredientsInput'
@@ -147,18 +145,6 @@ class RecipeInput extends React.Component {
               variant='outlined'
               value={this.state.instructions}
               onChange={this.handleRecipeChange.bind(this)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="favourite" value="yes" />}
-              label="Favourite Recipe"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="public" value="yes" />}
-              label="Public"
             />
           </Grid>
         </Grid>
