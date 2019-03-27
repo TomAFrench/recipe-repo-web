@@ -96,7 +96,7 @@ class RecipeViewer extends React.Component {
         </div>
         </Grid>
       <div className={this.props.classes.layout}>
-        <RecipeGrid recipes={this.state.recipes.slice(0,5)}/>
+        <RecipeGrid recipes={this.state.recipes.slice(0,4)}/>
       </div>
     </React.Fragment>
     )
