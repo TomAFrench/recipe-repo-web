@@ -7,10 +7,6 @@ const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 2,
-    position: "relative",
-    left: 0,
-    bottom: 0,
-    right: 0,
   },
 });
 
@@ -22,7 +18,7 @@ class MyFooter extends React.Component {
         Recipe Repo
       </Typography>
       <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-        Something here to give the footer a purpose!
+        Come say hello on <a href={process.env.REACT_APP_GITHUB_URL} style={{textDecoration: 'none', color: 'grey'}}> Github</a>!
       </Typography>
     </footer>
     )

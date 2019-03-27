@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
@@ -8,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import RecipeDisplay from './RecipeDisplay';
 import RecipeGrid from './RecipeGrid';
 
-import axios from 'axios';
+import repoAPI from '../RecipeAPI';
 
 const styles = theme => ({
   layout: {
@@ -22,21 +21,14 @@ const styles = theme => ({
     },
   },
   mainImage: {
-    width: '100px',
-    margin: 'auto'
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    padding: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      marginTop: theme.spacing.unit * 6,
-      marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: 500,
+    margin: 'auto',
+    marginTop: 4 * theme.spacing.unit,
+    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
+      maxWidth: 1000,
     },
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
   },
 });
 
@@ -45,47 +37,66 @@ class RecipeViewer extends React.Component {
     super(props);
     this.state = {
       recipes: [],
-      recipe: {}
+      recipe: {},
+      image: ""
     }
-    this.getRecipe();
-    this.getRecipes();
+    
   }
 
-  getRecipes() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes')
-      .then(response => this.setState({recipes: response.data}));
+  componentDidMount(){
+    this.getRecipe(this.props.match.params.id);
+    this.getRecipes();
   }
   
-  getRecipe() {
-    axios.get(process.env.REACT_APP_API_URL +'/recipes/' + this.props.match.params.id)
-      .then(response => this.setState({recipe: response.data}));
+  async getRecipes() {
+    const response = await repoAPI.getRecipes();
+    this.setState({recipes: response.data});
+  }
+  
+  async getRecipe(recipe_id) {
+    const response = await repoAPI.getRecipe(recipe_id);
+    this.setState({recipe: response.data});
+    if ("image" in response.data){
+      this.decodeImage(response.data.image);
+    }
   }
   
   componentWillReceiveProps(nextProps){
     //Update the shown recipes if we move to a new page
-    this.getRecipe();
+    this.getRecipe(nextProps.match.params.id);
     this.getRecipes();
   }
-  render() {
-    
-    console.log(this.state.recipe)
-    var recipeImage = ""
-    if ("image" in this.state.recipe) {
-      let base64String = '0'//btoa(String.fromCharCode(...this.state.recipe.image.data));
-      recipeImage = <img className={this.props.classes.mainImage}
-                      src={"data:image/png;base64," + base64String}/>
-    }
 
+  async decodeImage(image) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(image.data.data));
+
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+
+    var recipeImage = "data:"+ image.contentType + ";base64," + window.btoa(binary)
+    this.setState({image: recipeImage})
+  };
+
+  render() {
+    const recipeImage = <img
+                          className={this.props.classes.mainImage}
+                          src={this.state.image}
+                          alt=""
+                        />
+    const recipeDisplay = ('name' in this.state.recipe
+                           ? <RecipeDisplay recipe={this.state.recipe} />
+                           : ""
+                          )
     return (
     <React.Fragment>
       <Grid container spacing={24}>
         <div className={this.props.classes.layout}>
           {recipeImage}
-          {<RecipeDisplay recipe={this.state.recipe} />}
+          {recipeDisplay}
         </div>
         </Grid>
-      <div className={classNames(this.props.classes.layout, this.props.classes.cardGrid)}>
-        <RecipeGrid recipes={this.state.recipes.slice(0,5)}/>
+      <div className={this.props.classes.layout}>
+        <RecipeGrid recipes={this.state.recipes.slice(0,4)}/>
       </div>
     </React.Fragment>
     )
