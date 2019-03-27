@@ -7,10 +7,6 @@ const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 2,
-    position: "relative",
-    left: 0,
-    bottom: 0,
-    right: 0,
   },
 });
 
