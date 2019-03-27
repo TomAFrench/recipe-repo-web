@@ -21,7 +21,7 @@ const styles = theme => ({
 class RecipeDisplay extends React.Component {
 
   renderSource(sourceName, sourceUrl){
-    if (sourceName === undefined){
+    if (sourceName === ""){
       console.log("hi", sourceName, sourceUrl)
       return null
     }
