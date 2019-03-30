@@ -49,7 +49,8 @@ class RecipeViewer extends React.Component {
   }
   
   async getRecipes() {
-    const response = await repoAPI.getRecipes();
+    const numberOfRecipes = 4
+    const response = await repoAPI.getRandomRecipes(numberOfRecipes);
     this.setState({recipes: response.data});
   }
   
@@ -96,7 +97,7 @@ class RecipeViewer extends React.Component {
         </div>
         </Grid>
       <div className={this.props.classes.layout}>
-        <RecipeGrid recipes={this.state.recipes.slice(0,4)}/>
+        <RecipeGrid recipes={this.state.recipes}/>
       </div>
     </React.Fragment>
     )
