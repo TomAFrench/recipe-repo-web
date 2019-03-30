@@ -50,6 +50,12 @@ class RecipeViewer extends React.Component {
     this.getRecipe(this.props.match.params.id);
     this.getRecipes();
   }
+
+  componentWillReceiveProps(nextProps){
+    //Update the shown recipes if we move to a new page
+    this.getRecipe(nextProps.match.params.id);
+    this.getRecipes();
+  }
   
   async getRecipes() {
     const numberOfRecipes = 4
@@ -59,30 +65,31 @@ class RecipeViewer extends React.Component {
   
   async getRecipe(recipe_id) {
     const response = await repoAPI.getRecipe(recipe_id);
-    this.setState({recipe: response.data});
+    const newRecipe = response.data
+    var newImage = ""
     if ("image" in response.data){
-      this.decodeImage(response.data.image);
+      newImage = this.decodeImage(response.data.image);
     }
-  }
-  
-  componentWillReceiveProps(nextProps){
-    //Update the shown recipes if we move to a new page
-    this.getRecipe(nextProps.match.params.id);
-    this.getRecipes();
+    this.setState({recipe: newRecipe, image: newImage})
   }
 
-  async decodeImage(image) {
+  decodeImage(image) {
     var binary = '';
     var bytes = [].slice.call(new Uint8Array(image.data.data));
 
     bytes.forEach((b) => binary += String.fromCharCode(b));
 
     var recipeImage = "data:"+ image.contentType + ";base64," + window.btoa(binary)
-    this.setState({image: recipeImage})
+    return recipeImage
   };
 
   editModeSwitch () {
-    this.setState( {editMode: !this.editMode })
+    this.setState( {editMode: !this.state.editMode })
+  }
+
+  recipeWasEdited(newRecipe, newImage) {
+    this.setState({recipe: newRecipe, image: newImage})
+    this.editModeSwitch()
   }
 
   render() {
@@ -92,11 +99,18 @@ class RecipeViewer extends React.Component {
                           alt=""
                         />
     const recipeDisplay = ('name' in this.state.recipe
-                           ? <RecipeDisplay recipe={this.state.recipe} />
+                           ? <RecipeDisplay
+                                recipe={this.state.recipe}
+                                handleEditRecipe={this.editModeSwitch.bind(this)}
+                           />
                            : ""
                           )
     
-    const recipeEditor = <RecipeInput initalRecipe={this.state.recipe} initalImage={this.state.image}/>
+    const recipeEditor = <RecipeInput 
+                            initalRecipe={this.state.recipe}
+                            initalImage={this.state.image}
+                            saveAction={this.recipeWasEdited.bind(this)}
+                            />
     
     return (
     <React.Fragment>

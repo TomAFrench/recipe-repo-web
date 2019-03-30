@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
   paper: {
@@ -73,7 +74,7 @@ class RecipeDisplay extends React.Component {
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
         {this.props.recipe.name}
       </Typography>
-      {this.renderSource(this.props.recipe.source_name, this.props.recipe.source_url)}
+      {this.renderSource(this.props.recipe.sourceName, this.props.recipe.sourceUrl)}
       <Typography display='inline' variant="h6" color="textPrimary" paragraph>
         Ingredients:
       </Typography>
@@ -84,6 +85,11 @@ class RecipeDisplay extends React.Component {
       <Typography display='inline' variant="h6" color="textSecondary" paragraph>
         {this.props.recipe.instructions}
       </Typography>
+      <div className={this.props.classes.buttons}>
+            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.props.handleEditRecipe}>
+              Edit Recipe
+            </Button>
+        </div>
     </Paper>
     )
   }
