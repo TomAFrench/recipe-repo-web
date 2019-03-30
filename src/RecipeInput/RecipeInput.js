@@ -56,13 +56,13 @@ const styles = (theme) => ({
 
 class RecipeInput extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       recipe: {
         name: "",
         sourceName: "",
         sourceUrl: "",
-        ingredients: {},
+        ingredients: [],
         instructions: "",
       },
       image: {}
@@ -71,7 +71,7 @@ class RecipeInput extends React.Component {
 
 
   handleIngredientsChange(ingredients) {
-    this.setState({recipe: {...this.state.recipe, ingredients: ingredients}}, () => console.log(this.state.recipe.ingredients))
+    this.setState({recipe: {...this.state.recipe, ingredients: ingredients}}, () => console.log(this.state))
   }
 
   handleRecipeChange(event) {
@@ -104,7 +104,7 @@ class RecipeInput extends React.Component {
               label="Recipe Name"
               fullWidth
               variant='outlined'
-              value={this.state.name}
+              value={this.state.recipe.name}
               onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
@@ -115,7 +115,7 @@ class RecipeInput extends React.Component {
               label="Recipe Source"
               fullWidth
               variant='outlined'
-              value={this.state.sourceName}
+              value={this.state.recipe.sourceName}
               onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
@@ -126,12 +126,12 @@ class RecipeInput extends React.Component {
               label="Source URL"
               fullWidth
               variant='outlined'
-              value={this.state.sourceUrl}
+              value={this.state.recipe.sourceUrl}
               onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>
           <Grid item xs={12}>
-            <IngredientsInput handleChange={this.handleIngredientsChange.bind(this)}/>
+            <IngredientsInput ingredients={this.state.recipe.ingredients} updateIngredients={this.handleIngredientsChange.bind(this)}/>
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -143,7 +143,7 @@ class RecipeInput extends React.Component {
               multiline={true}
               rowsMax={20}
               variant='outlined'
-              value={this.state.instructions}
+              value={this.state.recipe.instructions}
               onChange={this.handleRecipeChange.bind(this)}
             />
           </Grid>

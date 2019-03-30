@@ -8,6 +8,7 @@ import RecipeDisplay from './RecipeDisplay';
 import RecipeGrid from './RecipeGrid';
 
 import repoAPI from '../RecipeAPI';
+import RecipeInput from '../RecipeInput/RecipeInput';
 
 const styles = theme => ({
   layout: {
@@ -33,12 +34,14 @@ const styles = theme => ({
 });
 
 class RecipeViewer extends React.Component {
+  
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       recipes: [],
       recipe: {},
-      image: ""
+      image: "",
+      editMode: false
     }
     
   }
@@ -78,6 +81,10 @@ class RecipeViewer extends React.Component {
     this.setState({image: recipeImage})
   };
 
+  editModeSwitch () {
+    this.setState( {editMode: !this.editMode })
+  }
+
   render() {
     const recipeImage = <img
                           className={this.props.classes.mainImage}
@@ -88,12 +95,15 @@ class RecipeViewer extends React.Component {
                            ? <RecipeDisplay recipe={this.state.recipe} />
                            : ""
                           )
+    
+    const recipeEditor = <RecipeInput initalRecipe={this.state.recipe} initalImage={this.state.image}/>
+    
     return (
     <React.Fragment>
       <Grid container spacing={24}>
         <div className={this.props.classes.layout}>
           {recipeImage}
-          {recipeDisplay}
+          {this.state.editMode ? recipeEditor: recipeDisplay}
         </div>
         </Grid>
       <div className={this.props.classes.layout}>
