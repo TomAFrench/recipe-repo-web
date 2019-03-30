@@ -22,20 +22,23 @@ class IngredientEntry extends React.Component {
     this.handleValueChange = this.handleValueChange.bind(this);
   }
 
-  validate(name, value) {
-    if (name === "quantity") {
-      value = Number.parseFloat(value)
-      if (Number.isNaN(value) || value < 0){
-        return false
-      }
+  validate(ingredient) {
+    const quantity = Number.parseFloat(ingredient.quantity)
+    if (Number.isNaN(quantity) || quantity < 0){
+      console.log(ingredient)
+      return false
     }
     return true
   }
+
   handleValueChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-    if (this.validate(name, value)) {
-      this.props.handleChange(name,value);
+    const name = event.target.name
+    const value = event.target.value
+
+    var ingredient = Object.assign({}, this.props.values)
+    ingredient[name] = value
+    if (this.validate(ingredient)) {
+      this.props.handleChange(ingredient);
     }
   }
 

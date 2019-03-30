@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { Redirect } from 'react-router-dom'
 
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -20,9 +21,15 @@ const styles = theme => ({
 
 class RecipeDisplay extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      redirect: false
+    } 
+  }
+
   renderSource(sourceName, sourceUrl){
     if (sourceName === ""){
-      console.log("hi", sourceName, sourceUrl)
       return null
     }
 
@@ -62,6 +69,7 @@ class RecipeDisplay extends React.Component {
   render() {
     return (
     <Paper className={this.props.classes.paper}>
+      {this.renderRedirect}
       <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
         {this.props.recipe.name}
       </Typography>
