@@ -57,16 +57,24 @@ const styles = (theme) => ({
 class RecipeInput extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      recipe: {
-        name: "",
-        sourceName: "",
-        sourceUrl: "",
-        ingredients: [],
-        instructions: "",
-      },
-      image: {}
+    if (this.props.initalRecipe) {
+      this.state = {
+        recipe: this.props.initalRecipe,
+        image: this.props.initalImage
+      }
+    } else {  
+      this.state = {
+        recipe: {
+          name: "",
+          sourceName: "",
+          sourceUrl: "",
+          ingredients: [],
+          instructions: "",
+        },
+        image: {}
+      }
     }
+    console.log(this.state)
   }
 
 
@@ -83,9 +91,23 @@ class RecipeInput extends React.Component {
     this.setState({imageURL: URL.createObjectURL(event.target.files[0])})
   }
 
-  SaveNewRecipe(){
-    repoAPI.saveNewRecipe(this.state.recipe, this.state.image);
+  saveRecipe(){
+    // Check if updating or making a new recipe
+    // '_id' key only exists in existing recipes
+    var saveAction
+    if ('_id' in this.state.recipe) {
+      saveAction = repoAPI.updateRecipe.bind(repoAPI)
+    } else {
+      saveAction = repoAPI.saveNewRecipe.bind(repoAPI)
+    }
+    saveAction(this.state.recipe, this.state.image).then((res) => {  
+      if (res.status === 200 && this.props.saveAction) {
+        this.props.saveAction(this.state.recipe, this.state.image)
+      }
+    })
   }
+
+
 
   render() {
     return (
@@ -152,7 +174,7 @@ class RecipeInput extends React.Component {
             <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
               Upload Image
             </FileUploadButton>
-            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.SaveNewRecipe.bind(this)} >
+            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.saveRecipe.bind(this)} >
               Save Recipe
             </Button>
         </div>
