@@ -28,6 +28,10 @@ class RecipeAPIWrapper {
 
     return axios.post(this.API_URL + '/recipes', data, config)
   }
+
+  async getRandomRecipes (numberOfRecipes) {
+    return axios.get(this.API_URL + '/random/' + numberOfRecipes)
+  }
 }
 
 var repoAPI = new RecipeAPIWrapper();
