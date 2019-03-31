@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, BrowserRouter } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Album from './Library/Album'
 import RecipeViewer from './Recipe/RecipeViewer'
@@ -23,19 +23,21 @@ const styles = theme => ({
 class App extends Component {
   render () {
     return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={this.props.classes.app}>
-          <PrimarySearchAppBar />
-          <div className={this.props.classes.contentWrap}>
-            <Route exact path='/' component={Album} />
-            <Route path='/recipe/:id' component={RecipeViewer} />
-            <Route exact path='/create_recipe' component={RecipeInput} />
-            <Route exact path='/random' component={RandomRecipe} />
+      <BrowserRouter>
+        <div>
+          <CssBaseline />
+          <div className={this.props.classes.app}>
+            <PrimarySearchAppBar />
+            <div className={this.props.classes.contentWrap}>
+              <Route exact path='/' component={Album} />
+              <Route path='/recipe/:id' component={RecipeViewer} />
+              <Route exact path='/create_recipe' component={RecipeInput} />
+              <Route exact path='/random' component={RandomRecipe} />
+            </div>
+            <MyFooter />
           </div>
-          <MyFooter />
         </div>
-      </React.Fragment>
+      </BrowserRouter>
     )
   }
 }
