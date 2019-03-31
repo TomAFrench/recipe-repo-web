@@ -1,41 +1,41 @@
-import React from 'react';
+import React from 'react'
 import { NavLink } from 'react-router-dom'
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import PropTypes from 'prop-types'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import InputBase from '@material-ui/core/InputBase'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import { withStyles } from '@material-ui/core/styles'
+import MenuIcon from '@material-ui/icons/Menu'
+import SearchIcon from '@material-ui/icons/Search'
 
 import FastfoodIcon from '@material-ui/icons/Fastfood'
-import SidebarDrawer from './SidebarDrawer';
+import SidebarDrawer from './SidebarDrawer'
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '100%'
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 10,
+    marginRight: 10
   },
   icon: {
-    position: "relative",
+    position: 'relative',
     width: theme.typography.h6.fontSize,
-    height: theme.typography.h6.fontSize,
+    height: theme.typography.h6.fontSize
   },
   title: {
     marginLeft: 10,
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+      display: 'block'
+    }
   },
   search: {
     position: 'relative',
@@ -49,8 +49,8 @@ const styles = theme => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 3,
-      width: 'auto',
-    },
+      width: 'auto'
+    }
   },
   searchIcon: {
     width: theme.spacing.unit * 9,
@@ -59,11 +59,11 @@ const styles = theme => ({
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   inputRoot: {
     color: 'inherit',
-    width: '100%',
+    width: '100%'
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -73,39 +73,42 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
+      width: 200
+    }
   },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+      display: 'flex'
+    }
   },
   sectionMobile: {
     display: 'flex',
     [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-});
+      display: 'none'
+    }
+  }
+})
 
 class PrimarySearchAppBar extends React.Component {
-  state = {
-    sideAnchorEl: null
-  };
+  constructor (props) {
+    super(props)
+    this.state = {
+      sideAnchorEl: null
+    }
+  }
 
-  handleSideMenuOpen(event) {
+  handleSideMenuOpen (event) {
     this.setState({ sideAnchorEl: event.currentTarget })
   }
 
-  handleSideMenuClose() {
-    this.setState({ sideAnchorEl: null });
+  handleSideMenuClose () {
+    this.setState({ sideAnchorEl: null })
   }
 
-  render() {
-    const { sideAnchorEl } = this.state;
-    const { classes } = this.props;
+  render () {
+    const { sideAnchorEl } = this.state
+    const { classes } = this.props
     const isSideMenuOpen = Boolean(sideAnchorEl)
 
     const renderSideMenu = (
@@ -117,23 +120,23 @@ class PrimarySearchAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position='static'>
           <Toolbar>
-            <IconButton className={classes.menuButton} onClick={this.handleSideMenuOpen.bind(this)} color="inherit" aria-label="Open drawer">
+            <IconButton className={classes.menuButton} onClick={this.handleSideMenuOpen.bind(this)} color='inherit' aria-label='Open drawer'>
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap component={NavLink} to={`/`} style={{textDecoration: 'none'}}>
-              <FastfoodIcon className={classes.icon}/> Recipe Repo
+            <Typography className={classes.title} variant='h6' color='inherit' noWrap component={NavLink} to={`/`} style={{ textDecoration: 'none' }}>
+              <FastfoodIcon className={classes.icon} /> Recipe Repo
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search…"
+                placeholder='Search…'
                 classes={{
                   root: classes.inputRoot,
-                  input: classes.inputInput,
+                  input: classes.inputInput
                 }}
               />
             </div>
@@ -142,12 +145,12 @@ class PrimarySearchAppBar extends React.Component {
         </AppBar>
         {renderSideMenu}
       </div>
-    );
+    )
   }
 }
 
 PrimarySearchAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
-export default withStyles(styles)(PrimarySearchAppBar);
+export default withStyles(styles)(PrimarySearchAppBar)

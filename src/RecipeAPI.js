@@ -1,63 +1,62 @@
-import axios from 'axios';
+/* eslint-env browser */
+import axios from 'axios'
 
 class RecipeAPIWrapper {
-
-  constructor() {
-    this.API_URL = process.env.REACT_APP_API_URL;
+  constructor () {
+    this.API_URL = process.env.REACT_APP_API_URL
   }
 
-  async getRecipes() {
-    return axios.get(this.API_URL + '/recipes');
+  async getRecipes () {
+    return axios.get(this.API_URL + '/recipes')
   }
 
-  async getRecipe(recipe_id) {
-    return axios.get(this.API_URL + '/recipes/' + recipe_id);
+  async getRecipe (recipeID) {
+    return axios.get(this.API_URL + '/recipes/' + recipeID)
   }
 
-  formEncodeRecipe(recipe, image){
-    let data = new FormData();
-    Object.keys(recipe).forEach(key => data.append(key, recipe[key]));
-    data.set("ingredients", JSON.stringify(Object.values(recipe.ingredients)));
-    data.append('image', image);
+  formEncodeRecipe (recipe, image) {
+    let data = new FormData()
+    Object.keys(recipe).forEach(key => data.append(key, recipe[key]))
+    data.set('ingredients', JSON.stringify(Object.values(recipe.ingredients)))
+    data.append('image', image)
 
     return data
   }
 
-  async saveNewRecipe(recipe, image){
+  async saveNewRecipe (recipe, image) {
     const encodedRecipe = this.formEncodeRecipe(recipe, image)
 
     const config = {
       headers: {
-          'content-type': 'multipart/form-data'
+        'content-type': 'multipart/form-data'
       }
-     };
+    }
 
     return axios.post(this.API_URL + '/recipes', encodedRecipe, config)
   }
 
-  async updateRecipe(recipe, image){
+  async updateRecipe (recipe, image) {
     const encodedRecipe = this.formEncodeRecipe(recipe, image)
 
     const config = {
       headers: {
-          'content-type': 'multipart/form-data'
+        'content-type': 'multipart/form-data'
       }
-     };
-    
-    const recipe_id = recipe._id
-    return axios.put(this.API_URL + '/recipes/' + recipe_id, encodedRecipe, config)
+    }
+
+    const recipeID = recipe._id
+    return axios.put(this.API_URL + '/recipes/' + recipeID, encodedRecipe, config)
   }
 
   async getRandomRecipes (numberOfRecipes) {
     return axios.get(this.API_URL + '/random/' + numberOfRecipes)
   }
 
-  async deleteRecipe(recipe_id) {
-    return axios.delete(this.API_URL + '/recipes/' + recipe_id);
+  async deleteRecipe (recipeID) {
+    return axios.delete(this.API_URL + '/recipes/' + recipeID)
   }
-
 }
 
-var repoAPI = new RecipeAPIWrapper();
+var repoAPI = new RecipeAPIWrapper()
 
-export default repoAPI;
+export default repoAPI

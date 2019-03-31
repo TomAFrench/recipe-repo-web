@@ -61,7 +61,7 @@ class RecipeCard extends React.Component {
           {this.props.recipe.name}
         </Typography>
         <Typography>
-          {this.props.recipe.source_url}
+          {this.props.recipe.sourceUrl}
         </Typography>
       </CardContent>
       <CardActions>

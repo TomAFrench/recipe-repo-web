@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
+import { withStyles } from '@material-ui/core/styles'
 
 import IngredientsInput from './IngredientsInput'
 
 import Button from '@material-ui/core/Button'
-import repoAPI from '../RecipeAPI';
-import FileUploadButton from '../RecipeInput/FileUploadButton';
+import repoAPI from '../RecipeAPI'
+import FileUploadButton from '../RecipeInput/FileUploadButton'
 
 const styles = (theme) => ({
   layout: {
@@ -20,8 +20,8 @@ const styles = (theme) => ({
     [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
       width: 600,
       marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+      marginRight: 'auto'
+    }
   },
   paper: {
     marginTop: theme.spacing.unit * 3,
@@ -30,16 +30,16 @@ const styles = (theme) => ({
     [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
       marginTop: theme.spacing.unit * 6,
       marginBottom: theme.spacing.unit * 6,
-      padding: theme.spacing.unit * 3,
-    },
+      padding: theme.spacing.unit * 3
+    }
   },
   buttons: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   button: {
     marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   },
   mainImage: {
     display: 'block',
@@ -48,28 +48,28 @@ const styles = (theme) => ({
     margin: 'auto',
     marginTop: 4 * theme.spacing.unit,
     [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
-      maxWidth: 1000,
-    },
-  },
+      maxWidth: 1000
+    }
+  }
 
-});
+})
 
 class RecipeInput extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     if (this.props.initalRecipe) {
       this.state = {
         recipe: this.props.initalRecipe,
         image: this.props.initalImage
       }
-    } else {  
+    } else {
       this.state = {
         recipe: {
-          name: "",
-          sourceName: "",
-          sourceUrl: "",
+          name: '',
+          sourceName: '',
+          sourceUrl: '',
           ingredients: [],
-          instructions: "",
+          instructions: ''
         },
         image: {}
       }
@@ -77,21 +77,20 @@ class RecipeInput extends React.Component {
     console.log(this.state)
   }
 
-
-  handleIngredientsChange(ingredients) {
-    this.setState({recipe: {...this.state.recipe, ingredients: ingredients}}, () => console.log(this.state))
+  handleIngredientsChange (ingredients) {
+    this.setState({ recipe: { ...this.state.recipe, ingredients: ingredients } }, () => console.log(this.state))
   }
 
-  handleRecipeChange(event) {
-    this.setState({recipe: {...this.state.recipe, [event.target.name]: event.target.value}})
+  handleRecipeChange (event) {
+    this.setState({ recipe: { ...this.state.recipe, [event.target.name]: event.target.value } })
   }
 
-  handleImageChange(event) {
-    this.setState({image: event.target.files[0]})
-    this.setState({imageURL: URL.createObjectURL(event.target.files[0])})
+  handleImageChange (event) {
+    this.setState({ image: event.target.files[0] })
+    this.setState({ imageURL: URL.createObjectURL(event.target.files[0]) })
   }
 
-  saveRecipe(){
+  saveRecipe () {
     // Check if updating or making a new recipe
     // '_id' key only exists in existing recipes
     var saveAction
@@ -100,92 +99,93 @@ class RecipeInput extends React.Component {
     } else {
       saveAction = repoAPI.saveNewRecipe.bind(repoAPI)
     }
-    saveAction(this.state.recipe, this.state.image).then((res) => {  
+    saveAction(this.state.recipe, this.state.image).then((res) => {
       if (res.status === 200 && this.props.saveAction) {
         this.props.saveAction(this.state.recipe, this.state.image)
       }
     })
   }
 
-
-
-  render() {
+  render () {
     return (
-    <main className={this.props.classes.layout}>
-      <img src={this.state.imageURL} alt="" className={this.props.classes.mainImage}/>
-      <Paper className={this.props.classes.paper}>
-        <Typography variant="h6" gutterBottom>
-          Create a Recipe
-        </Typography>
-        <Grid container spacing={24}>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="name"
-              name="name"
-              label="Recipe Name"
-              fullWidth
-              variant='outlined'
-              value={this.state.recipe.name}
-              onChange={this.handleRecipeChange.bind(this)}
-            />
+      <main className={this.props.classes.layout}>
+        <img src={this.state.imageURL} alt='' className={this.props.classes.mainImage} />
+        <Paper className={this.props.classes.paper}>
+          <Typography variant='h6' gutterBottom>
+            Create a Recipe
+          </Typography>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                id='name'
+                name='name'
+                label='Recipe Name'
+                fullWidth
+                variant='outlined'
+                value={this.state.recipe.name}
+                onChange={this.handleRecipeChange.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id='sourceName'
+                name='sourceName'
+                label='Recipe Source'
+                fullWidth
+                variant='outlined'
+                value={this.state.recipe.sourceName}
+                onChange={this.handleRecipeChange.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id='sourceUrl'
+                name='sourceUrl'
+                label='Source URL'
+                fullWidth
+                variant='outlined'
+                value={this.state.recipe.sourceUrl}
+                onChange={this.handleRecipeChange.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <IngredientsInput
+                ingredients={this.state.recipe.ingredients}
+                updateIngredients={this.handleIngredientsChange.bind(this)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                id='instructions'
+                name='instructions'
+                label='Instructions'
+                fullWidth
+                multiline
+                rowsMax={20}
+                variant='outlined'
+                value={this.state.recipe.instructions}
+                onChange={this.handleRecipeChange.bind(this)}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="sourceName"
-              name="sourceName"
-              label="Recipe Source"
-              fullWidth
-              variant='outlined'
-              value={this.state.recipe.sourceName}
-              onChange={this.handleRecipeChange.bind(this)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="sourceUrl"
-              name="sourceUrl"
-              label="Source URL"
-              fullWidth
-              variant='outlined'
-              value={this.state.recipe.sourceUrl}
-              onChange={this.handleRecipeChange.bind(this)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <IngredientsInput ingredients={this.state.recipe.ingredients} updateIngredients={this.handleIngredientsChange.bind(this)}/>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="instructions"
-              name="instructions"
-              label="Instructions"
-              fullWidth
-              multiline={true}
-              rowsMax={20}
-              variant='outlined'
-              value={this.state.recipe.instructions}
-              onChange={this.handleRecipeChange.bind(this)}
-            />
-          </Grid>
-        </Grid>
-        <div className={this.props.classes.buttons}>
-            <FileUploadButton className={this.props.classes.button} variant="contained" size="small" color="primary" handlefile={this.handleImageChange.bind(this)}>
+          <div className={this.props.classes.buttons}>
+            <FileUploadButton className={this.props.classes.button} variant='contained' size='small' color='primary' handlefile={this.handleImageChange.bind(this)}>
               Upload Image
             </FileUploadButton>
-            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.saveRecipe.bind(this)} >
+            <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.saveRecipe.bind(this)} >
               Save Recipe
             </Button>
-        </div>
-      </Paper>
-    </main>
+          </div>
+        </Paper>
+      </main>
     )
   }
 }
 
 RecipeInput.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
-export default withStyles(styles)(RecipeInput);
+export default withStyles(styles)(RecipeInput)

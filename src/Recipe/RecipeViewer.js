@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
 import { Redirect } from 'react-router-dom'
 
-import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid'
 
-import RecipeDisplay from './RecipeDisplay';
-import RecipeGrid from './RecipeGrid';
-
-import repoAPI from '../RecipeAPI';
-import RecipeInput from '../RecipeInput/RecipeInput';
+import RecipeDisplay from './RecipeDisplay'
+import RecipeGrid from './RecipeGrid'
+import repoAPI from '../RecipeAPI'
+import RecipeInput from '../RecipeInput/RecipeInput'
 
 const styles = theme => ({
   layout: {
@@ -19,8 +18,8 @@ const styles = theme => ({
     [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
       width: 1000,
       marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+      marginRight: 'auto'
+    }
   },
   mainImage: {
     display: 'block',
@@ -29,121 +28,119 @@ const styles = theme => ({
     margin: 'auto',
     marginTop: 4 * theme.spacing.unit,
     [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
-      maxWidth: 1000,
-    },
-  },
-});
+      maxWidth: 1000
+    }
+  }
+})
 
 class RecipeViewer extends React.Component {
-  
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       recipes: [],
       recipe: {},
-      image: "",
+      image: '',
       editMode: false
     }
-    
   }
 
-  componentDidMount(){
+  componentDidMount () {
     this.getSelectedRecipe(this.props.match.params.id)
     this.getRecipeCards()
   }
 
-  componentWillReceiveProps(nextProps){
-    //Update the shown recipes if we move to a new page
+  componentWillReceiveProps (nextProps) {
+    // Update the shown recipes if we move to a new page
     this.getSelectedRecipe(nextProps.match.params.id)
     this.getRecipeCards()
   }
-  
-  async getRecipeCards() {
+
+  async getRecipeCards () {
     const numberOfRecipes = 4
-    const response = await repoAPI.getRandomRecipes(numberOfRecipes);
-    this.setState({recipes: response.data});
-  }
-  
-  async getSelectedRecipe(recipe_id) {
-    const response = await repoAPI.getRecipe(recipe_id);
-    const newRecipe = response.data
-    var newImage = ""
-    if ("image" in response.data){
-      newImage = this.decodeImage(response.data.image);
-    }
-    this.setState({recipe: newRecipe, image: newImage})
+    const response = await repoAPI.getRandomRecipes(numberOfRecipes)
+    this.setState({ recipes: response.data })
   }
 
-  async deleteRecipe(){
-    await repoAPI.deleteRecipe(this.props.match.params.id);
+  async getSelectedRecipe (recipeID) {
+    const response = await repoAPI.getRecipe(recipeID)
+    const newRecipe = response.data
+    var newImage = ''
+    if ('image' in response.data) {
+      newImage = this.decodeImage(response.data.image)
+    }
+    this.setState({ recipe: newRecipe, image: newImage })
+  }
+
+  async deleteRecipe () {
+    await repoAPI.deleteRecipe(this.props.match.params.id)
     this.setState({ redirect: true })
   }
-  
-  renderRedirect = () => {
+
+  renderRedirect () {
     if (this.state.redirect) {
       return <Redirect to='/' />
     }
   }
 
-  decodeImage(image) {
-    var binary = '';
-    var bytes = [].slice.call(new Uint8Array(image.data.data));
+  decodeImage (image) {
+    var binary = ''
+    var bytes = [].slice.call(new Uint8Array(image.data.data))
 
-    bytes.forEach((b) => binary += String.fromCharCode(b));
+    bytes.forEach((b) => (binary += String.fromCharCode(b)))
 
-    var recipeImage = "data:"+ image.contentType + ";base64," + window.btoa(binary)
+    var recipeImage = 'data:' + image.contentType + ';base64,' + window.btoa(binary)
     return recipeImage
   };
 
   editModeSwitch () {
-    this.setState( {editMode: !this.state.editMode })
+    this.setState({ editMode: !this.state.editMode })
   }
 
-  recipeWasEdited(newRecipe, newImage) {
-    this.setState({recipe: newRecipe, image: newImage})
+  recipeWasEdited (newRecipe, newImage) {
+    this.setState({ recipe: newRecipe, image: newImage })
     this.editModeSwitch()
   }
 
-  render() {
+  render () {
     const recipeImage = <img
-                          className={this.props.classes.mainImage}
-                          src={this.state.image}
-                          alt=""
-                        />
+      className={this.props.classes.mainImage}
+      src={this.state.image}
+      alt=''
+    />
     const recipeDisplay = ('name' in this.state.recipe
-                           ? <RecipeDisplay
-                                recipe={this.state.recipe}
-                                handleEditRecipe={this.editModeSwitch.bind(this)}
-                                handleDeleteRecipe={this.deleteRecipe.bind(this)}
-                           />
-                           : ""
-                          )
-    
-    const recipeEditor = <RecipeInput 
-                            initalRecipe={this.state.recipe}
-                            initalImage={this.state.image}
-                            saveAction={this.recipeWasEdited.bind(this)}
-                            />
-    
+      ? <RecipeDisplay
+        recipe={this.state.recipe}
+        handleEditRecipe={this.editModeSwitch.bind(this)}
+        handleDeleteRecipe={this.deleteRecipe.bind(this)}
+      />
+      : ''
+    )
+
+    const recipeEditor = <RecipeInput
+      initalRecipe={this.state.recipe}
+      initalImage={this.state.image}
+      saveAction={this.recipeWasEdited.bind(this)}
+    />
+
     return (
-    <React.Fragment>
-      {this.renderRedirect()}
-      <Grid container spacing={24}>
-        <div className={this.props.classes.layout}>
-          {recipeImage}
-          {this.state.editMode ? recipeEditor: recipeDisplay}
-        </div>
+      <React.Fragment>
+        {this.renderRedirect()}
+        <Grid container spacing={24}>
+          <div className={this.props.classes.layout}>
+            {recipeImage}
+            {this.state.editMode ? recipeEditor : recipeDisplay}
+          </div>
         </Grid>
-      <div className={this.props.classes.layout}>
-        <RecipeGrid recipes={this.state.recipes}/>
-      </div>
-    </React.Fragment>
+        <div className={this.props.classes.layout}>
+          <RecipeGrid recipes={this.state.recipes} />
+        </div>
+      </React.Fragment>
     )
   }
 }
 
 RecipeViewer.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
-export default withStyles(styles)(RecipeViewer);
+export default withStyles(styles)(RecipeViewer)
