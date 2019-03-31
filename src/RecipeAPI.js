@@ -51,6 +51,11 @@ class RecipeAPIWrapper {
   async getRandomRecipes (numberOfRecipes) {
     return axios.get(this.API_URL + '/random/' + numberOfRecipes)
   }
+
+  async deleteRecipe(recipe_id) {
+    return axios.delete(this.API_URL + '/recipes/' + recipe_id);
+  }
+
 }
 
 var repoAPI = new RecipeAPIWrapper();

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { Redirect } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid';
 
@@ -47,8 +48,14 @@ class RecipeViewer extends React.Component {
   }
 
   componentDidMount(){
-    this.getRecipe(this.props.match.params.id);
-    this.getRecipes();
+    this.getSelectedRecipe(this.props.match.params.id)
+    this.getRecipeCards()
+  }
+
+  componentWillReceiveProps(nextProps){
+    //Update the shown recipes if we move to a new page
+    this.getSelectedRecipe(nextProps.match.params.id)
+    this.getRecipeCards()
   }
 
   componentWillReceiveProps(nextProps){
@@ -57,13 +64,13 @@ class RecipeViewer extends React.Component {
     this.getRecipes();
   }
   
-  async getRecipes() {
+  async getRecipeCards() {
     const numberOfRecipes = 4
     const response = await repoAPI.getRandomRecipes(numberOfRecipes);
     this.setState({recipes: response.data});
   }
   
-  async getRecipe(recipe_id) {
+  async getSelectedRecipe(recipe_id) {
     const response = await repoAPI.getRecipe(recipe_id);
     const newRecipe = response.data
     var newImage = ""
@@ -71,6 +78,17 @@ class RecipeViewer extends React.Component {
       newImage = this.decodeImage(response.data.image);
     }
     this.setState({recipe: newRecipe, image: newImage})
+  }
+
+  async deleteRecipe(){
+    await repoAPI.deleteRecipe(this.props.match.params.id);
+    this.setState({ redirect: true })
+  }
+  
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/' />
+    }
   }
 
   decodeImage(image) {
@@ -102,6 +120,7 @@ class RecipeViewer extends React.Component {
                            ? <RecipeDisplay
                                 recipe={this.state.recipe}
                                 handleEditRecipe={this.editModeSwitch.bind(this)}
+                                handleDeleteRecipe={this.deleteRecipe.bind(this)}
                            />
                            : ""
                           )
@@ -114,6 +133,7 @@ class RecipeViewer extends React.Component {
     
     return (
     <React.Fragment>
+      {this.renderRedirect()}
       <Grid container spacing={24}>
         <div className={this.props.classes.layout}>
           {recipeImage}
