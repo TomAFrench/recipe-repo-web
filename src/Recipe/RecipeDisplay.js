@@ -34,7 +34,7 @@ class RecipeDisplay extends React.Component {
   }
 
   renderSource(sourceName, sourceUrl){
-    if (sourceName === ""){
+    if (typeof sourceName === 'undefined' || sourceName === ""){
       return null
     }
 
