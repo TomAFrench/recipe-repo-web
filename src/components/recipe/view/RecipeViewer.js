@@ -15,8 +15,8 @@ const styles = theme => ({
     width: 'auto',
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
-      width: 1000,
+    [theme.breakpoints.up(1600 + theme.spacing.unit * 2 * 2)]: {
+      width: 1600,
       marginLeft: 'auto',
       marginRight: 'auto'
     }
@@ -27,8 +27,8 @@ const styles = theme => ({
     maxHeight: 500,
     margin: 'auto',
     marginTop: 4 * theme.spacing.unit,
-    [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
-      maxWidth: 1000
+    [theme.breakpoints.up(1600 + theme.spacing.unit * 2 * 2)]: {
+      maxWidth: 1600
     }
   }
 })
@@ -107,6 +107,7 @@ class RecipeViewer extends React.Component {
       src={this.state.image}
       alt=''
     />
+
     const recipeDisplay = ('name' in this.state.recipe
       ? <RecipeDisplay
         recipe={this.state.recipe}
