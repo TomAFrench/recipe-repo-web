@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Route, BrowserRouter } from 'react-router-dom'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Album from './Library/Album'
-import RecipeViewer from './Recipe/RecipeViewer'
-import RecipeInput from './RecipeInput/RecipeInput'
-import RandomRecipe from './common/RandomRecipe'
-import PrimarySearchAppBar from './common/Appbar'
-import MyFooter from './common/Footer'
 import { withStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+
+import RandomRecipe from './components/common/RandomRecipe'
+import { Album } from './components/album'
+import { RecipeViewer } from './components/recipe/view'
+import { RecipeInput } from './components/recipe/edit'
+import { PrimarySearchAppBar, MyFooter } from './components/frame'
 
 const styles = theme => ({
   app: {

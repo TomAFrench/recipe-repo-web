@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles'
-import repoAPI from '../RecipeAPI'
+import repoAPI from '../../RecipeAPI'
 
 const styles = () => ({})
 

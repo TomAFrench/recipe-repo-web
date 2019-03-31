@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import NavLink from 'react-router-dom/NavLink'
+import { NavLink } from 'react-router-dom'
 
 import RestaurantIcon from '@material-ui/icons/Restaurant'
 import SettingsIcon from '@material-ui/icons/Settings'

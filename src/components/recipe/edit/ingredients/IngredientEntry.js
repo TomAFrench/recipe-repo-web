@@ -1,12 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import { withStyles } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
-import Fab from '@material-ui/core/Fab'
-import AddIcon from '@material-ui/icons/Add'
+
+import { Grid, TextField, IconButton, Fab } from '@material-ui/core'
+import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons'
 
 const styles = (theme) => ({
   button: {

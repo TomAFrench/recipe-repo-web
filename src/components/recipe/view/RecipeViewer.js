@@ -5,10 +5,10 @@ import { Redirect } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 
+import repoAPI from '../../../RecipeAPI'
+import { RecipeGrid } from '../../album'
+import { RecipeInput } from '../edit'
 import RecipeDisplay from './RecipeDisplay'
-import RecipeGrid from './RecipeGrid'
-import repoAPI from '../RecipeAPI'
-import RecipeInput from '../RecipeInput/RecipeInput'
 
 const styles = theme => ({
   layout: {

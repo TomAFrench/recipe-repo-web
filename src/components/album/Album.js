@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+
+import { Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
-import repoAPI from '../RecipeAPI'
-import RecipeGrid from '../Recipe/RecipeGrid'
+import repoAPI from '../../RecipeAPI'
+import { RecipeGrid } from '.'
 
 const styles = theme => ({
   appBar: {
