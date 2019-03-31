@@ -71,6 +71,16 @@ class RecipeDisplay extends React.Component {
     ))
   }
 
+  renderInstructions() {
+    // Split the string on empty lines
+    const instructionArray = this.props.recipe.instructions.split('\r\n\r\n')
+    return instructionArray.map((instruction, index) => (
+      <Typography display='inline' variant="h6" color="textSecondary" paragraph>
+        {index + 1}. {instruction}
+      </Typography>
+    ))
+  }
+
   render() {
     return (
     <Paper className={this.props.classes.paper}>
@@ -86,9 +96,7 @@ class RecipeDisplay extends React.Component {
       <Typography display='inline' variant="h6" color="textPrimary" paragraph>
         Instructions:
       </Typography>
-      <Typography display='inline' variant="h6" color="textSecondary" paragraph>
-        {this.props.recipe.instructions}
-      </Typography>
+      {this.renderInstructions()}
       <div className={this.props.classes.buttons}>
             <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.props.handleEditRecipe}>
               Edit Recipe
