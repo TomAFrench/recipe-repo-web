@@ -57,12 +57,6 @@ class RecipeViewer extends React.Component {
     this.getSelectedRecipe(nextProps.match.params.id)
     this.getRecipeCards()
   }
-
-  componentWillReceiveProps(nextProps){
-    //Update the shown recipes if we move to a new page
-    this.getRecipe(nextProps.match.params.id);
-    this.getRecipes();
-  }
   
   async getRecipeCards() {
     const numberOfRecipes = 4
