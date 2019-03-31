@@ -18,6 +18,10 @@ const styles = theme => ({
       padding: theme.spacing.unit * 3,
     },
   },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 });
 
 class RecipeDisplay extends React.Component {
@@ -88,6 +92,9 @@ class RecipeDisplay extends React.Component {
       <div className={this.props.classes.buttons}>
             <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.props.handleEditRecipe}>
               Edit Recipe
+            </Button>
+            <Button className={this.props.classes.button} variant="contained" size="small" color="primary" onClick={this.props.handleDeleteRecipe}>
+              Delete Recipe
             </Button>
         </div>
     </Paper>
