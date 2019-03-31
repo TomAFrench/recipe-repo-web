@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles'
-import repoAPI from '../../RecipeAPI'
+import { RecipeAPI } from '../../utils'
 
 const styles = () => ({})
 
@@ -14,7 +14,7 @@ class RandomRecipe extends React.Component {
   }
 
   async getRandomRecipe () {
-    const response = await repoAPI.getRandomRecipes(1)
+    const response = await (new RecipeAPI()).getRandomRecipes(1)
     this.setState({ recipe_id: response.data[0]._id })
   }
 

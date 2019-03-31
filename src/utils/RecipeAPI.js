@@ -57,6 +57,4 @@ class RecipeAPIWrapper {
   }
 }
 
-var repoAPI = new RecipeAPIWrapper()
-
-export default repoAPI
+export default RecipeAPIWrapper

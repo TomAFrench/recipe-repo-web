@@ -6,7 +6,7 @@ import { Paper, Button, Grid, Typography, TextField } from '@material-ui/core'
 
 import FileUploadButton from './FileUploadButton'
 import IngredientsInput from './ingredients/IngredientsInput'
-import repoAPI from '../../../RecipeAPI'
+import { RecipeAPI } from '../../../utils'
 
 const styles = (theme) => ({
   layout: {
@@ -90,10 +90,11 @@ class RecipeInput extends React.Component {
     // Check if updating or making a new recipe
     // '_id' key only exists in existing recipes
     var saveAction
+    const apiWrapper = new RecipeAPI()
     if ('_id' in this.state.recipe) {
-      saveAction = repoAPI.updateRecipe.bind(repoAPI)
+      saveAction = apiWrapper.updateRecipe.bind(apiWrapper)
     } else {
-      saveAction = repoAPI.saveNewRecipe.bind(repoAPI)
+      saveAction = apiWrapper.saveNewRecipe.bind(apiWrapper)
     }
     saveAction(this.state.recipe, this.state.image).then((res) => {
       if (res.status === 200 && this.props.saveAction) {

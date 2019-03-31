@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
-import repoAPI from '../../RecipeAPI'
+import { RecipeAPI } from '../../utils'
 import { RecipeGrid } from '.'
 
 const styles = theme => ({
@@ -45,7 +45,7 @@ class Album extends React.Component {
   }
 
   async getRecipes () {
-    const response = await repoAPI.getRecipes()
+    const response = await (new RecipeAPI()).getRecipes()
     this.setState({ recipes: response.data })
   }
 

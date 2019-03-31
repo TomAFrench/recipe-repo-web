@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 
-import repoAPI from '../../../RecipeAPI'
+import { RecipeAPI } from '../../../utils'
 import { RecipeGrid } from '../../album'
 import { RecipeInput } from '../edit'
 import RecipeDisplay from './RecipeDisplay'
@@ -57,12 +57,12 @@ class RecipeViewer extends React.Component {
 
   async getRecipeCards () {
     const numberOfRecipes = 4
-    const response = await repoAPI.getRandomRecipes(numberOfRecipes)
+    const response = await (new RecipeAPI()).getRandomRecipes(numberOfRecipes)
     this.setState({ recipes: response.data })
   }
 
   async getSelectedRecipe (recipeID) {
-    const response = await repoAPI.getRecipe(recipeID)
+    const response = await (new RecipeAPI()).getRecipe(recipeID)
     const newRecipe = response.data
     var newImage = ''
     if ('image' in response.data) {
@@ -72,7 +72,7 @@ class RecipeViewer extends React.Component {
   }
 
   async deleteRecipe () {
-    await repoAPI.deleteRecipe(this.props.match.params.id)
+    await (new RecipeAPI()).deleteRecipe(this.props.match.params.id)
     this.setState({ redirect: true })
   }
 
