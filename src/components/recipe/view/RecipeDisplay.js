@@ -18,6 +18,22 @@ const styles = theme => ({
   buttons: {
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  ingredients: {
+    display: 'block',
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      verticalAlign: 'top',
+      display: 'inline-block',
+      width: '25%'
+    }
+  },
+  instructions: {
+    display: 'block',
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      verticalAlign: 'top',
+      display: 'inline-block',
+      width: '75%'
+    }
   }
 })
 
@@ -49,50 +65,62 @@ class RecipeDisplay extends React.Component {
       )
     }
 
-    return (
-      <div>
-        <Typography variant='h6' align='center' color='textSecondary'>
-          A recipe by
-        </Typography>
-        {sourceText}
-      </div>
-    )
+    return sourceText
   }
 
   renderIngredients () {
-    return this.props.recipe.ingredients.map((ingredient) => (
-      <Typography display='inline' variant='h6' color='textSecondary' paragraph>
-        {ingredient.quantity} {ingredient.unit} {ingredient.ingredient}
-      </Typography>
-    ))
+    return (
+      <React.Fragment>
+        <Typography display='inline' variant='h6' color='textPrimary' paragraph>
+            Ingredients:
+        </Typography>
+        {this.props.recipe.ingredients.map((ingredient) => (
+          <Typography display='inline' variant='h6' color='textSecondary' paragraph>
+            {ingredient.quantity !== 0 && ingredient.quantity } {ingredient.unit} {ingredient.ingredient}
+          </Typography>
+        ))
+        }
+      </React.Fragment>
+    )
   }
 
   renderInstructions () {
     // Split the string on empty lines
     const instructionArray = this.props.recipe.instructions.split('\r\n\r\n')
-    return instructionArray.map((instruction, index) => (
-      <Typography display='inline' variant='h6' color='textSecondary' paragraph>
-        {index + 1}. {instruction}
-      </Typography>
-    ))
+
+    return (
+      <React.Fragment>
+        <Typography display='inline' variant='h6' color='textPrimary' paragraph>
+            Instructions:
+        </Typography>
+        {instructionArray.map((instruction, index) => (
+          <Typography display='inline' variant='h6' color='textSecondary' paragraph>
+            {index + 1}. {instruction}
+          </Typography>
+        ))
+        }
+      </React.Fragment>
+    )
   }
 
   render () {
+    const recipeTitle = (
+      <Typography component='h1' variant='h2' align='center' color='textPrimary' gutterBottom>
+        {this.props.recipe.name}
+      </Typography>
+    )
+
     return (
       <Paper className={this.props.classes.paper}>
         {this.renderRedirect}
-        <Typography component='h1' variant='h2' align='center' color='textPrimary' gutterBottom>
-          {this.props.recipe.name}
-        </Typography>
+        {recipeTitle}
         {this.renderSource(this.props.recipe.sourceName, this.props.recipe.sourceUrl)}
-        <Typography display='inline' variant='h6' color='textPrimary' paragraph>
-          Ingredients:
-        </Typography>
-        {this.renderIngredients()}
-        <Typography display='inline' variant='h6' color='textPrimary' paragraph>
-          Instructions:
-        </Typography>
-        {this.renderInstructions()}
+        <div className={this.props.classes.ingredients}>
+          {this.renderIngredients()}
+        </div>
+        <div className={this.props.classes.instructions}>
+          {this.renderInstructions()}
+        </div>
         <div className={this.props.classes.buttons}>
           <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleEditRecipe}>
             Edit Recipe
