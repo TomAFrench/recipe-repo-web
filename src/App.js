@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Album from './Library/Album';
 import RecipeViewer from './Recipe/RecipeViewer';
 import RecipeInput from './RecipeInput/RecipeInput';
+import RandomRecipe from './common/RandomRecipe';
 import PrimarySearchAppBar from './common/Appbar';
 import MyFooter from './common/Footer';
 import { withStyles } from '@material-ui/core/styles';
@@ -32,6 +33,7 @@ class App extends Component {
             <Route exact path="/" component={Album} />
             <Route path="/recipe/:id" component={RecipeViewer} />
             <Route exact path="/create_recipe" component={RecipeInput} />
+            <Route exact path="/random" component={RandomRecipe} />
           </div>
           <MyFooter/>
         </div>

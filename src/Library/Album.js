@@ -70,6 +70,11 @@ class Album extends React.Component {
                     Create new recipe!
                   </Button>
                 </Grid>
+                <Grid item>
+                  <Button variant="outlined" color="primary" component={NavLink} to='/random'>
+                    I'm feeling lucky!
+                  </Button>
+                </Grid>
               </Grid>
             </div>
           </div>
