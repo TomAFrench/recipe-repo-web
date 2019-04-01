@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import { RecipeAPI } from '../../../utils'
 import { RecipeGrid } from '../../album'
 import { RecipeInput } from '../edit'
+import DeleteDialog from './DeleteDialog'
 import RecipeDisplay from './RecipeDisplay'
 
 const styles = theme => ({
@@ -40,7 +41,8 @@ class RecipeViewer extends React.Component {
       recipes: [],
       recipe: {},
       image: '',
-      editMode: false
+      editMode: false,
+      dialog: false
     }
   }
 
@@ -101,6 +103,14 @@ class RecipeViewer extends React.Component {
     this.editModeSwitch()
   }
 
+  openDialog () {
+    this.setState({ dialog: true })
+  }
+
+  closeDialog () {
+    this.setState({ dialog: false })
+  }
+
   render () {
     const recipeImage = <img
       className={this.props.classes.mainImage}
@@ -112,7 +122,7 @@ class RecipeViewer extends React.Component {
       ? <RecipeDisplay
         recipe={this.state.recipe}
         handleEditRecipe={this.editModeSwitch.bind(this)}
-        handleDeleteRecipe={this.deleteRecipe.bind(this)}
+        handleDeleteRecipe={this.openDialog.bind(this)}
       />
       : ''
     )
@@ -125,6 +135,12 @@ class RecipeViewer extends React.Component {
 
     return (
       <React.Fragment>
+        <DeleteDialog
+          open={this.state.dialog}
+          recipeName={this.state.recipe.name}
+          confirmAction={this.deleteRecipe.bind(this)}
+          closeAction={this.closeDialog.bind(this)}
+        />
         {this.renderRedirect()}
         <Grid container spacing={24}>
           <div className={this.props.classes.layout}>
