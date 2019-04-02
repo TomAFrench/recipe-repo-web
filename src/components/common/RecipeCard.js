@@ -54,8 +54,8 @@ class RecipeCard extends React.Component {
           <Typography gutterBottom variant='h5' component='h2'>
             {this.props.recipe.name}
           </Typography>
-          <Typography>
-            {this.props.recipe.sourceUrl}
+          <Typography color='textSecondary' component='a' href={this.props.recipe.sourceUrl} style={{ textDecoration: 'none' }}>
+            {this.props.recipe.sourceName}
           </Typography>
         </CardContent>
         <CardActions>
