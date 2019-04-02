@@ -22,6 +22,16 @@ const styles = theme => ({
       marginRight: 'auto'
     }
   },
+  gridLayout: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+      width: 1100,
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    }
+  },
   mainImage: {
     display: 'block',
     maxWidth: '100%',
@@ -148,7 +158,7 @@ class RecipeViewer extends React.Component {
             {this.state.editMode ? recipeEditor : recipeDisplay}
           </div>
         </Grid>
-        <div className={this.props.classes.layout}>
+        <div className={this.props.classes.gridLayout}>
           <RecipeGrid recipes={this.state.recipes} />
         </div>
       </React.Fragment>
