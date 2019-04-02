@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
+import base64Img from 'base64-img'
 
 import { Paper, Button, Grid, Typography, TextField } from '@material-ui/core'
 
@@ -55,8 +56,7 @@ class RecipeInput extends React.Component {
     super(props)
     if (this.props.initalRecipe) {
       this.state = {
-        recipe: this.props.initalRecipe,
-        image: this.props.initalImage
+        recipe: this.props.initalRecipe
       }
     } else {
       this.state = {
@@ -70,20 +70,42 @@ class RecipeInput extends React.Component {
         image: {}
       }
     }
+
+    if (typeof this.props.initalImage !== 'undefined') {
+      base64Img.requestBase64(this.props.initalImage, (err, res, body) => {
+        if (err) {
+          console.log(err)
+        } else {
+          this.setState({ imageURL: body })
+        }
+      })
+    }
     console.log(this.state)
   }
 
   handleIngredientsChange (ingredients) {
-    this.setState({ recipe: { ...this.state.recipe, ingredients: ingredients } }, () => console.log(this.state))
+    this.setState({
+      recipe: {
+        ...this.state.recipe,
+        ingredients: ingredients
+      }
+    }, () => console.log(this.state))
   }
 
   handleRecipeChange (event) {
-    this.setState({ recipe: { ...this.state.recipe, [event.target.name]: event.target.value } })
+    this.setState({
+      recipe: {
+        ...this.state.recipe,
+        [event.target.name]: event.target.value
+      }
+    })
   }
 
   handleImageChange (event) {
-    this.setState({ image: event.target.files[0] })
-    this.setState({ imageURL: URL.createObjectURL(event.target.files[0]) })
+    this.setState({
+      image: event.target.files[0],
+      imageURL: URL.createObjectURL(event.target.files[0])
+    })
   }
 
   saveRecipe () {
