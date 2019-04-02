@@ -19,35 +19,12 @@ const styles = () => ({
 })
 
 class RecipeCard extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      image: ''
-    }
-  }
-
-  componentDidMount () {
-    this.decodeImage()
-  }
-
-  async decodeImage () {
-    if ('image' in this.props.recipe) {
-      var binary = ''
-      var bytes = [].slice.call(new Uint8Array(this.props.recipe.image.data.data))
-
-      bytes.forEach((b) => (binary += String.fromCharCode(b)))
-
-      var recipeImage = 'data:' + this.props.recipe.image.contentType + ';base64,' + window.btoa(binary)
-      this.setState({ image: recipeImage })
-    }
-  };
-
   render () {
     return (
       <Card className={this.props.classes.card}>
         <CardMedia
           className={this.props.classes.cardMedia}
-          image={this.state.image}
+          image={typeof this.props.recipe.image !== 'undefined' ? process.env.REACT_APP_API_URL + '/' + this.props.recipe.image.path : ''}
           title={this.props.recipe.name}
         />
         <CardContent className={this.props.classes.cardContent}>

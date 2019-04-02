@@ -49,8 +49,7 @@ class RecipeViewer extends React.Component {
     super(props)
     this.state = {
       recipes: [],
-      recipe: {},
-      image: '',
+      recipe: { image: { path: '' } },
       editMode: false,
       dialog: false
     }
@@ -65,6 +64,7 @@ class RecipeViewer extends React.Component {
     // Update the shown recipes if we move to a new page
     this.getSelectedRecipe(nextProps.match.params.id)
     this.getRecipeCards()
+    this.setState({ editMode: false })
   }
 
   async getRecipeCards () {
@@ -76,11 +76,7 @@ class RecipeViewer extends React.Component {
   async getSelectedRecipe (recipeID) {
     const response = await (new RecipeAPI()).getRecipe(recipeID)
     const newRecipe = response.data
-    var newImage = ''
-    if ('image' in response.data) {
-      newImage = this.decodeImage(response.data.image)
-    }
-    this.setState({ recipe: newRecipe, image: newImage })
+    this.setState({ recipe: newRecipe })
   }
 
   async deleteRecipe () {
@@ -94,22 +90,12 @@ class RecipeViewer extends React.Component {
     }
   }
 
-  decodeImage (image) {
-    var binary = ''
-    var bytes = [].slice.call(new Uint8Array(image.data.data))
-
-    bytes.forEach((b) => (binary += String.fromCharCode(b)))
-
-    var recipeImage = 'data:' + image.contentType + ';base64,' + window.btoa(binary)
-    return recipeImage
-  };
-
   editModeSwitch () {
     this.setState({ editMode: !this.state.editMode })
   }
 
-  recipeWasEdited (newRecipe, newImage) {
-    this.setState({ recipe: newRecipe, image: newImage })
+  recipeWasEdited (newRecipe) {
+    this.setState({ recipe: newRecipe })
     this.editModeSwitch()
   }
 
@@ -124,7 +110,7 @@ class RecipeViewer extends React.Component {
   render () {
     const recipeImage = <img
       className={this.props.classes.mainImage}
-      src={this.state.image}
+      src={typeof this.state.recipe.image !== 'undefined' && process.env.REACT_APP_API_URL + '/' + this.state.recipe.image.path}
       alt=''
     />
 
@@ -139,7 +125,8 @@ class RecipeViewer extends React.Component {
 
     const recipeEditor = <RecipeInput
       initalRecipe={this.state.recipe}
-      initalImage={this.state.image}
+      initalImage={typeof this.state.recipe.image !== 'undefined'
+        ? process.env.REACT_APP_API_URL + '/' + this.state.recipe.image.path : undefined}
       saveAction={this.recipeWasEdited.bind(this)}
     />
 
@@ -154,7 +141,7 @@ class RecipeViewer extends React.Component {
         {this.renderRedirect()}
         <Grid container spacing={24}>
           <div className={this.props.classes.layout}>
-            {recipeImage}
+            {!this.state.editMode && recipeImage}
             {this.state.editMode ? recipeEditor : recipeDisplay}
           </div>
         </Grid>
