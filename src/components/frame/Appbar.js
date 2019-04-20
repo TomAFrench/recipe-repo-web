@@ -88,27 +88,27 @@ class PrimarySearchAppBar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      sideAnchorEl: null
+      sidebarOpen: false
     }
   }
 
-  handleSideMenuOpen (event) {
-    this.setState({ sideAnchorEl: event.currentTarget })
+  handleSideMenuOpen () {
+    this.setState({ sidebarOpen: true })
   }
 
   handleSideMenuClose () {
-    this.setState({ sideAnchorEl: null })
+    this.setState({ sidebarOpen: false })
   }
 
   render () {
-    const { sideAnchorEl } = this.state
+    const { sidebarOpen } = this.state
     const { classes } = this.props
-    const isSideMenuOpen = Boolean(sideAnchorEl)
 
     const renderSideMenu = (
       <SidebarDrawer
-        open={isSideMenuOpen}
+        open={sidebarOpen}
         handleClose={this.handleSideMenuClose.bind(this)}
+        handleOpen={this.handleSideMenuOpen.bind(this)}
       />
     )
 

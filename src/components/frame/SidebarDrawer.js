@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import List from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
@@ -47,7 +47,7 @@ class SidebarDrawer extends React.Component {
     )
 
     return (
-      <Drawer open={this.props.open} onClose={this.props.handleClose}>
+      <SwipeableDrawer open={this.props.open} onClose={this.props.handleClose} onOpen={this.props.handleOpen}>
         <div
           tabIndex={0}
           role='button'
@@ -56,7 +56,7 @@ class SidebarDrawer extends React.Component {
         >
           {sideList}
         </div>
-      </Drawer>
+      </SwipeableDrawer>
     )
   }
 }
