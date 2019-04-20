@@ -33,10 +33,8 @@ const styles = theme => ({
     }
   },
   mainImage: {
-    display: 'block',
     maxWidth: '100%',
     maxHeight: 500,
-    margin: 'auto',
     marginTop: 4 * theme.spacing.unit,
     [theme.breakpoints.up(1600 + theme.spacing.unit * 2 * 2)]: {
       maxWidth: 1600
@@ -139,11 +137,13 @@ class RecipeViewer extends React.Component {
           closeAction={this.closeDialog.bind(this)}
         />
         {this.renderRedirect()}
-        <Grid container spacing={24}>
-          <div className={this.props.classes.layout}>
+        <Grid container className={this.props.classes.layout} spacing={24} direction='column' alignContent='center' alignItems='center'>
+          <Grid item>
             {!this.state.editMode && recipeImage}
+          </Grid>
+          <Grid item>
             {this.state.editMode ? recipeEditor : recipeDisplay}
-          </div>
+          </Grid>
         </Grid>
         <div className={this.props.classes.gridLayout}>
           <RecipeGrid recipes={this.state.recipes} />
