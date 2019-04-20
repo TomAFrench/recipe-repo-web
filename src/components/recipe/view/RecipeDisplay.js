@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
-import { Paper, Typography, Button } from '@material-ui/core'
+import { Paper, Typography, Button, Grid } from '@material-ui/core'
 
 const styles = theme => ({
   paper: {
@@ -13,26 +13,6 @@ const styles = theme => ({
       marginTop: theme.spacing.unit * 6,
       marginBottom: theme.spacing.unit * 6,
       padding: theme.spacing.unit * 3
-    }
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  },
-  ingredients: {
-    display: 'block',
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      verticalAlign: 'top',
-      display: 'inline-block',
-      width: '25%'
-    }
-  },
-  instructions: {
-    display: 'block',
-    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
-      verticalAlign: 'top',
-      display: 'inline-block',
-      width: '75%'
     }
   }
 })
@@ -72,11 +52,11 @@ class RecipeDisplay extends React.Component {
     return (
       <React.Fragment>
         <Typography display='inline' variant='h6' color='textPrimary' paragraph>
-            Ingredients:
+          Ingredients:
         </Typography>
         {this.props.recipe.ingredients.map((ingredient) => (
           <Typography display='inline' variant='h6' color='textSecondary' paragraph>
-            {ingredient.quantity !== 0 && ingredient.quantity } {ingredient.unit} {ingredient.ingredient}
+            {ingredient.quantity !== 0 && ingredient.quantity} {ingredient.unit} {ingredient.ingredient}
           </Typography>
         ))
         }
@@ -91,7 +71,7 @@ class RecipeDisplay extends React.Component {
     return (
       <React.Fragment>
         <Typography display='inline' variant='h6' color='textPrimary' paragraph>
-            Instructions:
+          Instructions:
         </Typography>
         {instructionArray.map((instruction, index) => (
           <Typography display='inline' variant='h6' color='textSecondary' paragraph>
@@ -113,23 +93,35 @@ class RecipeDisplay extends React.Component {
     return (
       <Paper className={this.props.classes.paper}>
         {this.renderRedirect}
-        {recipeTitle}
-        {this.renderSource(this.props.recipe.sourceName, this.props.recipe.sourceUrl)}
-        <div className={this.props.classes.ingredients}>
-          {this.renderIngredients()}
-        </div>
-        <div className={this.props.classes.instructions}>
-          {this.renderInstructions()}
-        </div>
-        <div className={this.props.classes.buttons}>
-          <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleEditRecipe}>
-            Edit Recipe
-          </Button>
-          <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleDeleteRecipe}>
-            Delete Recipe
-          </Button>
-        </div>
-      </Paper>
+        <Grid container direction='column'>
+          <Grid item>
+            {recipeTitle}
+          </Grid>
+          <Grid item>
+            {this.renderSource(this.props.recipe.sourceName, this.props.recipe.sourceUrl)}
+          </Grid>
+          <Grid container item direction='row' spacing='40'>
+            <Grid item>
+              {this.renderIngredients()}
+            </Grid>
+            <Grid item>
+              {this.renderInstructions()}
+            </Grid>
+          </Grid>
+          <Grid container item direction='row' spacing='8' justify='flex-end'>
+            <Grid item>
+              <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleEditRecipe}>
+                Edit Recipe
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleDeleteRecipe}>
+                Delete Recipe
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Paper >
     )
   }
 }
