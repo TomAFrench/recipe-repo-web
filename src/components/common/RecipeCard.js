@@ -24,7 +24,7 @@ class RecipeCard extends React.Component {
       <Card className={this.props.classes.card}>
         <CardMedia
           className={this.props.classes.cardMedia}
-          image={typeof this.props.recipe.image !== 'undefined' ? process.env.REACT_APP_API_URL + '/' + this.props.recipe.image.path : ''}
+          image={typeof this.props.recipe.images !== 'undefined' && this.props.recipe.images.length > 0 ? process.env.REACT_APP_API_URL + '/recipes/' + this.props.recipe._id + '/images/' + this.props.recipe.images[0].name : ''}
           title={this.props.recipe.name}
         />
         <CardContent className={this.props.classes.cardContent}>
