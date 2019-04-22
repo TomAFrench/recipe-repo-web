@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Album from './Library/Album';
-import RecipeViewer from './Recipe/RecipeViewer';
-import RecipeInput from './RecipeInput/RecipeInput';
-import PrimarySearchAppBar from './common/Appbar';
-import MyFooter from './common/Footer';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react'
+import { Route, BrowserRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
+import RandomRecipe from './components/common/RandomRecipe'
+import { Album } from './components/album'
+import { RecipeViewer } from './components/recipe/view'
+import { RecipeInput } from './components/recipe/edit'
+import { PrimarySearchAppBar, MyFooter } from './components/frame'
 
 const styles = theme => ({
   app: {
@@ -16,29 +16,30 @@ const styles = theme => ({
     flexDirection: 'column'
   },
   contentWrap: {
-    flex: 1,
+    flex: 1
   }
-});
+})
 
 class App extends Component {
-
   render () {
     return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={this.props.classes.app}>
-          <PrimarySearchAppBar />
-          <div className={this.props.classes.contentWrap}>
-            <Route exact path="/" component={Album} />
-            <Route path="/recipe/:id" component={RecipeViewer} />
-            <Route exact path="/create_recipe" component={RecipeInput} />
+      <BrowserRouter>
+        <div>
+          <CssBaseline />
+          <div className={this.props.classes.app}>
+            <PrimarySearchAppBar />
+            <div className={this.props.classes.contentWrap}>
+              <Route exact path='/' component={Album} />
+              <Route path='/recipe/:id' component={RecipeViewer} />
+              <Route exact path='/create_recipe' component={RecipeInput} />
+              <Route exact path='/random' component={RandomRecipe} />
+            </div>
+            <MyFooter />
           </div>
-          <MyFooter/>
         </div>
-      </React.Fragment>
-    );
-  };
+      </BrowserRouter>
+    )
+  }
 }
 
-
-export default withStyles(styles)(App);
+export default withStyles(styles)(App)

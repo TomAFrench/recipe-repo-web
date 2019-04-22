@@ -1,15 +1,17 @@
 {
   "name": "recipe-repo-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "3.8.1",
     "@material-ui/icons": "3.0.1",
     "axios": "0.18.0",
+    "base64-img": "1.0.4",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "4.3.1",
-    "react-scripts": "2.1.2"
+    "react-scripts": "2.1.2",
+    "standard": "12.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
