@@ -47,7 +47,7 @@ class RecipeViewer extends React.Component {
     super(props)
     this.state = {
       recipes: [],
-      recipe: { image: { path: '' } },
+      recipe: { images: [{ name: '' }] },
       editMode: false,
       dialog: false
     }
@@ -108,7 +108,7 @@ class RecipeViewer extends React.Component {
   render () {
     const recipeImage = <img
       className={this.props.classes.mainImage}
-      src={typeof this.state.recipe.image !== 'undefined' && process.env.REACT_APP_API_URL + '/' + this.state.recipe.image.path}
+      src={typeof this.state.recipe.images !== 'undefined' && this.state.recipe.images.length > 0 && process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name}
       alt=''
     />
 
@@ -123,8 +123,8 @@ class RecipeViewer extends React.Component {
 
     const recipeEditor = <RecipeInput
       initalRecipe={this.state.recipe}
-      initalImage={typeof this.state.recipe.image !== 'undefined'
-        ? process.env.REACT_APP_API_URL + '/' + this.state.recipe.image.path : undefined}
+      initalImage={typeof this.state.recipe.images !== 'undefined' && this.state.recipe.images.length > 0
+        ? process.env.REACT_APP_API_URL + '/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name : undefined}
       saveAction={this.recipeWasEdited.bind(this)}
     />
 
