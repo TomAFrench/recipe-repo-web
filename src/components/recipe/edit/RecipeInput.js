@@ -83,6 +83,16 @@ class RecipeInput extends React.Component {
     console.log(this.state)
   }
 
+  handleImportRecipe (event) {
+    var fileReader = new window.FileReader()
+    fileReader.onload = (event) => {
+      this.setState({ recipe: JSON.parse(event.target.result) }, () => {
+        console.log(this.state.recipe)
+      })
+    }
+    fileReader.readAsText(event.target.files[0])
+  }
+
   handleIngredientsChange (ingredients) {
     this.setState({
       recipe: {
@@ -110,10 +120,9 @@ class RecipeInput extends React.Component {
 
   saveRecipe () {
     // Check if updating or making a new recipe
-    // '_id' key only exists in existing recipes
     var saveAction
     const apiWrapper = new RecipeAPI()
-    if ('_id' in this.state.recipe) {
+    if ('initalRecipe' in this.props) {
       saveAction = apiWrapper.updateRecipe.bind(apiWrapper)
     } else {
       saveAction = apiWrapper.saveNewRecipe.bind(apiWrapper)
@@ -190,7 +199,10 @@ class RecipeInput extends React.Component {
             </Grid>
           </Grid>
           <div className={this.props.classes.buttons}>
-            <FileUploadButton className={this.props.classes.button} variant='contained' size='small' color='primary' handlefile={this.handleImageChange.bind(this)}>
+            <FileUploadButton className={this.props.classes.button} id='importButton' variant='contained' size='small' color='primary' fileType='application/json' handlefile={this.handleImportRecipe.bind(this)}>
+              Import Recipe
+            </FileUploadButton>
+            <FileUploadButton className={this.props.classes.button} id='imageButton' variant='contained' size='small' color='primary' fileType='image/*' handlefile={this.handleImageChange.bind(this)}>
               Upload Image
             </FileUploadButton>
             <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.saveRecipe.bind(this)} >

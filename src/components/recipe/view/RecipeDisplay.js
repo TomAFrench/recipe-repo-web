@@ -70,6 +70,11 @@ class RecipeDisplay extends React.Component {
           <IngredientsAndInstructions ingredients={this.props.recipe.ingredients} instructions={this.props.recipe.instructions} />
           <Grid container item direction='row' spacing='8' justify='flex-end'>
             <Grid item>
+              <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleExportRecipe}>
+                Export Recipe
+              </Button>
+            </Grid>
+            <Grid item>
               <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleEditRecipe}>
                 Edit Recipe
               </Button>
