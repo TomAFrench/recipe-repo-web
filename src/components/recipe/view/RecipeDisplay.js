@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
 import { Paper, Typography, Button, Grid } from '@material-ui/core'
+import IngredientsAndInstructions from './IngredientsAndInstructions'
 
 const styles = theme => ({
   paper: {
@@ -49,41 +50,6 @@ class RecipeDisplay extends React.Component {
     return sourceText
   }
 
-  renderIngredients () {
-    return (
-      <React.Fragment>
-        <Typography display='inline' variant='h6' color='textPrimary' paragraph>
-          Ingredients:
-        </Typography>
-        {this.props.recipe.ingredients.map((ingredient) => (
-          <Typography display='inline' variant='h6' color='textSecondary' paragraph>
-            {ingredient.quantity !== 0 && ingredient.quantity} {ingredient.unit} {ingredient.ingredient}
-          </Typography>
-        ))
-        }
-      </React.Fragment>
-    )
-  }
-
-  renderInstructions () {
-    // Split the string on empty lines
-    const instructionArray = this.props.recipe.instructions.split('\r\n\r\n')
-
-    return (
-      <React.Fragment>
-        <Typography display='inline' variant='h6' color='textPrimary' paragraph>
-          Instructions:
-        </Typography>
-        {instructionArray.map((instruction, index) => (
-          <Typography display='inline' variant='h6' color='textSecondary' paragraph>
-            {index + 1}. {instruction}
-          </Typography>
-        ))
-        }
-      </React.Fragment>
-    )
-  }
-
   render () {
     const recipeTitle = (
       <Typography component='h1' variant='h2' align='center' color='textPrimary' gutterBottom>
@@ -101,14 +67,7 @@ class RecipeDisplay extends React.Component {
           <Grid item>
             {this.renderSource(this.props.recipe.sourceName, this.props.recipe.sourceUrl)}
           </Grid>
-          <Grid container item direction='row' spacing='40'>
-            <Grid item>
-              {this.renderIngredients()}
-            </Grid>
-            <Grid item>
-              {this.renderInstructions()}
-            </Grid>
-          </Grid>
+          <IngredientsAndInstructions ingredients={this.props.recipe.ingredients} instructions={this.props.recipe.instructions} />
           <Grid container item direction='row' spacing='8' justify='flex-end'>
             <Grid item>
               <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleEditRecipe}>
