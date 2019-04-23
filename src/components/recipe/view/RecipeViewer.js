@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import { Redirect } from 'react-router-dom'
+import { saveAs } from 'file-saver'
 
 import Grid from '@material-ui/core/Grid'
 
@@ -105,6 +106,21 @@ class RecipeViewer extends React.Component {
     this.setState({ dialog: false })
   }
 
+  exportRecipe () {
+    var fileName = this.state.recipe.URISafeName + '.json'
+
+    // Create a blob of the data
+    var fileToSave = new window.Blob([JSON.stringify(this.state.recipe, undefined, 2)], {
+      type: 'application/json',
+      name: fileName
+    })
+
+    console.log(fileToSave)
+
+    // Save the file
+    saveAs(fileToSave, fileName)
+  }
+
   render () {
     const recipeImage = <img
       className={this.props.classes.mainImage}
@@ -117,6 +133,7 @@ class RecipeViewer extends React.Component {
         recipe={this.state.recipe}
         handleEditRecipe={this.editModeSwitch.bind(this)}
         handleDeleteRecipe={this.openDialog.bind(this)}
+        handleExportRecipe={this.exportRecipe.bind(this)}
       />
       : ''
     )
