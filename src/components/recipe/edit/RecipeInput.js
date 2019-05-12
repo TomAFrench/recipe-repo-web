@@ -66,8 +66,7 @@ class RecipeInput extends React.Component {
           sourceUrl: '',
           ingredients: [],
           instructions: ''
-        },
-        image: {}
+        }
       }
     }
 
@@ -109,20 +108,29 @@ class RecipeInput extends React.Component {
     })
   }
 
-  saveRecipe () {
+  async saveRecipe () {
     // Check if updating or making a new recipe
-    var saveAction
+    var response
     const apiWrapper = new RecipeAPI()
     if ('initalRecipe' in this.props) {
-      saveAction = apiWrapper.updateRecipe.bind(apiWrapper)
+      response = await apiWrapper.updateRecipe(this.state.recipe)
     } else {
-      saveAction = apiWrapper.saveNewRecipe.bind(apiWrapper)
+      response = await apiWrapper.saveNewRecipe(this.state.recipe)
     }
-    saveAction(this.state.recipe, this.state.image).then((res) => {
-      if (res.status === 200 && this.props.saveAction) {
-        this.props.saveAction(this.state.recipe, this.state.image)
-      }
-    })
+
+    if (response.status !== 200) {
+      console.log(response)
+    }
+
+    if (response.status === 200 && typeof (this.state.image) !== 'undefined') {
+      apiWrapper.uploadImage(response.data.id, this.state.image)
+    }
+
+    if (response.status === 200 && this.props.saveAction) {
+      this.props.saveAction(this.state.recipe)
+    } else {
+      console.log(response)
+    }
   }
 
   render () {
