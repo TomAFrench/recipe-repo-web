@@ -133,10 +133,16 @@ class RecipeInput extends React.Component {
   }
 
   render () {
+    var imageUrl
+    if (typeof this.state.imageURL === 'undefined' && 'initalRecipe' in this.props && this.state.recipe.images.length > 0) {
+      imageUrl = process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name
+    } else if (typeof this.state.imageURL !== 'undefined') {
+      imageUrl = this.state.imageURL
+    }
     return (
       <main className={this.props.classes.layout}>
         <img
-          src={this.state.imageURL || process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name}
+          src={imageUrl}
           alt=''
           className={this.props.classes.mainImage}
         />
