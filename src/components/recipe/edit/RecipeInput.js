@@ -71,15 +71,6 @@ class RecipeInput extends React.Component {
       }
     }
 
-    if (typeof this.props.initalImage !== 'undefined') {
-      base64Img.requestBase64(this.props.initalImage, (err, res, body) => {
-        if (err) {
-          console.log(err)
-        } else {
-          this.setState({ imageURL: body })
-        }
-      })
-    }
     console.log(this.state)
   }
 
@@ -137,7 +128,11 @@ class RecipeInput extends React.Component {
   render () {
     return (
       <main className={this.props.classes.layout}>
-        <img src={this.state.imageURL} alt='' className={this.props.classes.mainImage} />
+        <img
+          src={this.state.imageURL || process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name}
+          alt=''
+          className={this.props.classes.mainImage}
+        />
         <Paper className={this.props.classes.paper}>
           <Typography variant='h6' gutterBottom>
             Create a Recipe
