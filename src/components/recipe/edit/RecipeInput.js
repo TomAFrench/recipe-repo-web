@@ -66,20 +66,10 @@ class RecipeInput extends React.Component {
           sourceUrl: '',
           ingredients: [],
           instructions: ''
-        },
-        image: {}
+        }
       }
     }
 
-    if (typeof this.props.initalImage !== 'undefined') {
-      base64Img.requestBase64(this.props.initalImage, (err, res, body) => {
-        if (err) {
-          console.log(err)
-        } else {
-          this.setState({ imageURL: body })
-        }
-      })
-    }
     console.log(this.state)
   }
 
@@ -118,26 +108,39 @@ class RecipeInput extends React.Component {
     })
   }
 
-  saveRecipe () {
+  async saveRecipe () {
     // Check if updating or making a new recipe
-    var saveAction
+    var response
     const apiWrapper = new RecipeAPI()
     if ('initalRecipe' in this.props) {
-      saveAction = apiWrapper.updateRecipe.bind(apiWrapper)
+      response = await apiWrapper.updateRecipe(this.state.recipe)
     } else {
-      saveAction = apiWrapper.saveNewRecipe.bind(apiWrapper)
+      response = await apiWrapper.saveNewRecipe(this.state.recipe)
     }
-    saveAction(this.state.recipe, this.state.image).then((res) => {
-      if (res.status === 200 && this.props.saveAction) {
-        this.props.saveAction(this.state.recipe, this.state.image)
-      }
-    })
+
+    if (response.status !== 200) {
+      console.log(response)
+    }
+
+    if (response.status === 200 && typeof (this.state.image) !== 'undefined') {
+      apiWrapper.uploadImage(response.data.id, this.state.image)
+    }
+
+    if (response.status === 200 && this.props.saveAction) {
+      this.props.saveAction(this.state.recipe)
+    } else {
+      console.log(response)
+    }
   }
 
   render () {
     return (
       <main className={this.props.classes.layout}>
-        <img src={this.state.imageURL} alt='' className={this.props.classes.mainImage} />
+        <img
+          src={this.state.imageURL || process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name}
+          alt=''
+          className={this.props.classes.mainImage}
+        />
         <Paper className={this.props.classes.paper}>
           <Typography variant='h6' gutterBottom>
             Create a Recipe
