@@ -2,26 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
-import { Grid, TextField, IconButton, Fab } from '@material-ui/core'
-import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons'
+import { Grid, TextField, IconButton } from '@material-ui/core'
+import { Delete as DeleteIcon } from '@material-ui/icons'
 
 const styles = (theme) => ({
   button: {
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit
+    marginTop: theme.spacing.unit * 1
   }
 })
 
 class IngredientEntry extends React.Component {
-  constructor (props) {
-    super(props)
-    this.handleValueChange = this.handleValueChange.bind(this)
-  }
-
   validate (ingredient) {
     const quantity = Number.parseFloat(ingredient.quantity)
     if (Number.isNaN(quantity) || quantity < 0) {
-      console.log(ingredient)
       return false
     }
     return true
@@ -40,7 +33,7 @@ class IngredientEntry extends React.Component {
 
   render () {
     return (
-      <React.Fragment>
+      <Grid item container xs={12} spacing={24}>
         <Grid item xs={2}>
           <TextField
             id='quantity'
@@ -50,10 +43,10 @@ class IngredientEntry extends React.Component {
             type='number'
             variant='outlined'
             value={this.props.values.quantity}
-            onChange={this.handleValueChange}
+            onChange={(event) => { this.handleValueChange(event) }}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={1}>
           <TextField
             id='unit'
             name='unit'
@@ -61,39 +54,41 @@ class IngredientEntry extends React.Component {
             fullWidth
             variant='outlined'
             value={this.props.values.unit}
-            onChange={this.handleValueChange}
+            onChange={(event) => { this.handleValueChange(event) }}
           />
         </Grid>
-        <Grid item xs={6} >
+        <Grid item xs={4} >
           <TextField
             required
             id='ingredient'
             name='ingredient'
-            label='ingredient'
+            label='Add an ingredient'
             variant='outlined'
+            fullWidth
             value={this.props.values.ingredient}
-            onChange={this.handleValueChange}
+            onChange={(event) => { this.handleValueChange(event) }}
           />
         </Grid>
-        {/* <Grid item xs={4}>
+        <Grid item xs={4}>
           <TextField
-            id="note"
-            name="note"
-            label="Note"
-            autoComplete="fname"
-            value={this.state.note}
-            onChange={this.handleNoteChange}
+            id='note'
+            name='note'
+            label='Note'
+            variant='outlined'
+            fullWidth
+            value={this.props.values.note}
+            onChange={(event) => { this.handleValueChange(event) }}
           />
-        </Grid> */}
-        {(this.props.lastItem === true)
-          ? <Fab color='primary' aria-label='Add' size='small' className={this.props.classes.button} onClick={this.props.onClick} >
-            <AddIcon />
-          </Fab>
-          : <IconButton className={this.props.classes.button} aria-label='Delete' onClick={this.props.onClick}>
+        </Grid>
+        <Grid item xs={1}>
+          {(!this.props.lastItem) &&
+          <IconButton className={this.props.classes.button} aria-label='Delete' onClick={this.props.onClick}>
             <DeleteIcon />
           </IconButton>
-        }
-      </React.Fragment>
+          }
+        </Grid>
+
+      </Grid>
     )
   }
 }

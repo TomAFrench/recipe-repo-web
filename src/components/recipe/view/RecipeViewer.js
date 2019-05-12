@@ -122,11 +122,14 @@ class RecipeViewer extends React.Component {
   }
 
   render () {
-    const recipeImage = <img
-      className={this.props.classes.mainImage}
-      src={typeof this.state.recipe.images !== 'undefined' && this.state.recipe.images.length > 0 && process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name}
-      alt=''
-    />
+    var recipeImage
+    if (typeof this.state.recipe.images !== 'undefined' && this.state.recipe.images.length > 0) {
+      recipeImage = <img
+        className={this.props.classes.mainImage}
+        src={process.env.REACT_APP_API_URL + '/recipes/' + this.state.recipe._id + '/images/' + this.state.recipe.images[0].name}
+        alt=''
+      />
+    }
 
     const recipeDisplay = ('name' in this.state.recipe
       ? <RecipeDisplay

@@ -2,8 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
-import { Paper, Typography, Button, Grid } from '@material-ui/core'
+import { Paper, Typography, Button, Divider, Grid } from '@material-ui/core'
 import IngredientsAndInstructions from './IngredientsAndInstructions'
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const styles = theme => ({
   paper: {
@@ -16,6 +21,11 @@ const styles = theme => ({
       marginBottom: theme.spacing.unit * 6,
       padding: theme.spacing.unit * 3
     }
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(20),
+    flexBasis: '33.33%',
+    flexShrink: 0
   }
 })
 
@@ -60,15 +70,39 @@ class RecipeDisplay extends React.Component {
     return (
       <Paper className={this.props.classes.paper}>
         {this.renderRedirect}
-        <Grid container direction='column'>
+        <Grid container direction='column' spacing={24}>
           <Grid item>
             {recipeTitle}
           </Grid>
           <Grid item>
             {this.renderSource(this.props.recipe.sourceName, this.props.recipe.sourceUrl)}
           </Grid>
+          <Grid item>
+            <Typography display='inline' variant='h6' color='textSecondary' paragraph>
+              {this.props.recipe.description}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography display='inline' variant='body1' color='textPrimary' paragraph>
+              {(typeof this.props.recipe.prepTime !== 'undefined') && 'Prep: ' + this.props.recipe.prepTime + 'mins'} {(typeof this.props.recipe.cookTime !== 'undefined') && 'Cook: ' + this.props.recipe.cookTime + 'mins'}
+            </Typography>
+          </Grid>
+          <Divider />
           <IngredientsAndInstructions ingredients={this.props.recipe.ingredients} instructions={this.props.recipe.instructions} />
-          <Grid container item direction='row' spacing='8' justify='flex-end'>
+          <Grid item>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography className={this.props.classes.heading}>Notes</Typography>
+                {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Typography display='inline' variant='h6' color='textSecondary' paragraph>
+                  {this.props.recipe.notes}
+                </Typography>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
+          <Grid container item direction='row' spacing={8} justify='flex-end'>
             <Grid item>
               <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.props.handleExportRecipe}>
                 Export Recipe

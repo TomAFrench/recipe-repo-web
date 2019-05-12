@@ -11,15 +11,14 @@ const styles = theme => ({
 function IngredientTypography (props) {
   const matches = useMediaQuery('(min-width:1000px)')
   return (
-    <Typography className={props.classes.ingredient} display='inline' variant='h6' color='textSecondary' noWrap={matches} paragraph>
+    <Typography display='inline' variant='h6' color='textSecondary' noWrap={matches} paragraph>
       {props.children}
     </Typography>
   )
 }
 
 IngredientTypography.propTypes = {
-  classes: PropTypes.object.isRequired,
-  ingredient: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(IngredientTypography)

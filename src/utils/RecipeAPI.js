@@ -14,37 +14,12 @@ class RecipeAPIWrapper {
     return axios.get(this.API_URL + '/recipes/' + recipeID)
   }
 
-  formEncodeRecipe (recipe) {
-    let data = new FormData()
-    Object.keys(recipe).forEach(key => data.append(key, recipe[key]))
-    data.set('ingredients', JSON.stringify(Object.values(recipe.ingredients)))
-
-    return data
-  }
-
   async saveNewRecipe (recipe) {
-    const encodedRecipe = this.formEncodeRecipe(recipe)
-
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    }
-
-    return axios.post(this.API_URL + '/recipes', encodedRecipe, config)
+    return axios.post(this.API_URL + '/recipes', recipe)
   }
 
   async updateRecipe (recipe) {
-    const encodedRecipe = this.formEncodeRecipe(recipe)
-
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    }
-
-    const recipeID = recipe._id
-    return axios.put(this.API_URL + '/recipes/' + recipeID, encodedRecipe, config)
+    return axios.put(this.API_URL + '/recipes/' + recipe._id, recipe)
   }
 
   async uploadImage (recipeID, image) {

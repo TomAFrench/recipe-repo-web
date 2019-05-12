@@ -12,16 +12,14 @@ const styles = theme => ({
 function IngredientsAndInstructions (props) {
   const matches = useMediaQuery(props.theme.breakpoints.up('md'))
 
-  // Split the string on empty lines
-  const instructionArray = props.instructions.split('\r\n\r\n')
   return (
-    <Grid container item direction='row' spacing='40' wrap={matches ? 'nowrap' : 'wrap'}>
+    <Grid container item direction='row' spacing={40} wrap={matches ? 'nowrap' : 'wrap'}>
       <Grid item>
         <Typography display='inline' variant='h6' color='textPrimary' paragraph>
           Ingredients:
         </Typography>
-        {props.ingredients.map((ingredient) => (
-          <IngredientTypography>
+        {props.ingredients.map((ingredient, key) => (
+          <IngredientTypography key={key}>
             {ingredient.quantity !== 0 && ingredient.quantity} {ingredient.unit} {ingredient.ingredient}
           </IngredientTypography>
         ))
@@ -31,9 +29,9 @@ function IngredientsAndInstructions (props) {
         <Typography display='inline' variant='h6' color='textPrimary' paragraph>
           Instructions:
         </Typography>
-        {instructionArray.map((instruction, index) => (
-          <Typography display='inline' variant='h6' color='textSecondary' paragraph>
-            {index + 1}. {instruction}
+        {props.instructions.map((instruction, key) => (
+          <Typography display='inline' variant='h6' color='textSecondary' key={key} paragraph>
+            {key + 1}. {instruction}
           </Typography>
         ))
         }
@@ -45,7 +43,7 @@ function IngredientsAndInstructions (props) {
 IngredientsAndInstructions.propTypes = {
   classes: PropTypes.object.isRequired,
   ingredients: PropTypes.array.isRequired,
-  instructions: PropTypes.string.isRequired
+  instructions: PropTypes.array.isRequired
 }
 
 export default withTheme()(withStyles(styles)(IngredientsAndInstructions))

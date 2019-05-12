@@ -4,17 +4,23 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { Paper, Button, Grid, Typography, TextField } from '@material-ui/core'
 
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
 import FileUploadButton from './FileUploadButton'
 import IngredientsInput from './ingredients/IngredientsInput'
 import { RecipeAPI } from '../../../utils'
+import InstructionsInput from './InstructionsInput'
 
 const styles = (theme) => ({
   layout: {
     width: 'auto',
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
-    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
-      width: 600,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 2 * 2)]: {
+      width: 1100,
       marginLeft: 'auto',
       marginRight: 'auto'
     }
@@ -46,6 +52,11 @@ const styles = (theme) => ({
     [theme.breakpoints.up(1000 + theme.spacing.unit * 2 * 2)]: {
       maxWidth: 1000
     }
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(20),
+    flexBasis: '33.33%',
+    flexShrink: 0
   }
 
 })
@@ -64,12 +75,10 @@ class RecipeInput extends React.Component {
           sourceName: '',
           sourceUrl: '',
           ingredients: [],
-          instructions: ''
+          instructions: []
         }
       }
     }
-
-    console.log(this.state)
   }
 
   handleImportRecipe (event) {
@@ -80,15 +89,6 @@ class RecipeInput extends React.Component {
       })
     }
     fileReader.readAsText(event.target.files[0])
-  }
-
-  handleIngredientsChange (ingredients) {
-    this.setState({
-      recipe: {
-        ...this.state.recipe,
-        ingredients: ingredients
-      }
-    }, () => console.log(this.state))
   }
 
   handleRecipeChange (event) {
@@ -108,13 +108,18 @@ class RecipeInput extends React.Component {
   }
 
   async saveRecipe () {
+    // Take deep copy of ingredient and remove empty array elements
+    const recipe = JSON.parse(JSON.stringify(this.state.recipe))
+    recipe.ingredients.pop()
+    recipe.instructions.pop()
+
     // Check if updating or making a new recipe
     var response
     const apiWrapper = new RecipeAPI()
     if ('initalRecipe' in this.props) {
-      response = await apiWrapper.updateRecipe(this.state.recipe)
+      response = await apiWrapper.updateRecipe(recipe)
     } else {
-      response = await apiWrapper.saveNewRecipe(this.state.recipe)
+      response = await apiWrapper.saveNewRecipe(recipe)
     }
 
     if (response.status !== 200) {
@@ -126,7 +131,7 @@ class RecipeInput extends React.Component {
     }
 
     if (response.status === 200 && this.props.saveAction) {
-      this.props.saveAction(this.state.recipe)
+      this.props.saveAction(recipe)
     } else {
       console.log(response)
     }
@@ -160,50 +165,167 @@ class RecipeInput extends React.Component {
                 fullWidth
                 variant='outlined'
                 value={this.state.recipe.name}
-                onChange={this.handleRecipeChange.bind(this)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id='sourceName'
-                name='sourceName'
-                label='Recipe Source'
-                fullWidth
-                variant='outlined'
-                value={this.state.recipe.sourceName}
-                onChange={this.handleRecipeChange.bind(this)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id='sourceUrl'
-                name='sourceUrl'
-                label='Source URL'
-                fullWidth
-                variant='outlined'
-                value={this.state.recipe.sourceUrl}
-                onChange={this.handleRecipeChange.bind(this)}
+                onChange={(event) => { this.handleRecipeChange(event) }}
               />
             </Grid>
             <Grid item xs={12}>
-              <IngredientsInput
-                ingredients={this.state.recipe.ingredients}
-                updateIngredients={this.handleIngredientsChange.bind(this)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id='instructions'
-                name='instructions'
-                label='Instructions'
-                fullWidth
-                multiline
-                rowsMax={20}
-                variant='outlined'
-                value={this.state.recipe.instructions}
-                onChange={this.handleRecipeChange.bind(this)}
-              />
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={this.props.classes.heading}>Description</Typography>
+                  {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <TextField
+                    id='description'
+                    name='description'
+                    label='Add a description of the recipe'
+                    fullWidth
+                    multiline
+                    rowsMax={20}
+                    variant='outlined'
+                    value={this.state.recipe.description}
+                    onChange={(event) => { this.handleRecipeChange(event) }}
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={this.props.classes.heading}>Ingredients</Typography>
+                  {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <IngredientsInput
+                    ingredients={this.state.recipe.ingredients}
+                    updateIngredients={(ingredients) => {
+                      this.setState({ recipe: {
+                        ...this.state.recipe,
+                        ingredients: ingredients } })
+                    }}
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={this.props.classes.heading}>Instructions</Typography>
+                  {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <InstructionsInput
+                    instructions={this.state.recipe.instructions}
+                    updateInstructions={(instructions) => {
+                      this.setState({ recipe: {
+                        ...this.state.recipe,
+                        instructions: instructions } })
+                    }}
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={this.props.classes.heading}>Notes</Typography>
+                  {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <TextField
+                    id='notes'
+                    name='notes'
+                    label='Add some notes'
+                    fullWidth
+                    multiline
+                    rowsMax={20}
+                    variant='outlined'
+                    value={this.state.recipe.notes}
+                    onChange={(event) => { this.handleRecipeChange(event) }}
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={this.props.classes.heading}>Details</Typography>
+                  {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        id='sourceName'
+                        name='sourceName'
+                        label='Recipe Source'
+                        fullWidth
+                        variant='outlined'
+                        value={this.state.recipe.sourceName}
+                        onChange={(event) => { this.handleRecipeChange(event) }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        id='sourceUrl'
+                        name='sourceUrl'
+                        label='Source URL'
+                        fullWidth
+                        variant='outlined'
+                        value={this.state.recipe.sourceUrl}
+                        onChange={(event) => { this.handleRecipeChange(event) }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id='prepTime'
+                        name='prepTime'
+                        label='Preparation Time (minutes)'
+                        fullWidth
+                        type='number'
+                        variant='outlined'
+                        value={this.state.recipe.prepTime}
+                        onChange={(event) => { this.handleRecipeChange(event) }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id='cookTime'
+                        name='cookTime'
+                        label='Cooking Time (minutes)'
+                        fullWidth
+                        type='number'
+                        variant='outlined'
+                        value={this.state.recipe.cookTime}
+                        onChange={(event) => { this.handleRecipeChange(event) }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <TextField
+                        id='servings'
+                        name='servings'
+                        label='Number of servings'
+                        fullWidth
+                        variant='outlined'
+                        value={this.state.recipe.servings}
+                        onChange={(event) => { this.handleRecipeChange(event) }}
+                      />
+                    </Grid>
+                  </Grid>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={this.props.classes.heading}>Tags</Typography>
+                  {/* <Typography className={this.props.classes.secondaryHeading}>I am an expansion panel</Typography> */}
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <TextField
+                    id='keywords'
+                    name='keywords'
+                    label='Add some keywords to make this recipe easier to find'
+                    fullWidth
+                    multiline
+                    rowsMax={20}
+                    variant='outlined'
+                    value={this.state.recipe.keywords}
+                    onChange={(event) => { this.handleRecipeChange(event) }}
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+
             </Grid>
           </Grid>
           <div className={this.props.classes.buttons}>
@@ -213,7 +335,7 @@ class RecipeInput extends React.Component {
             <FileUploadButton className={this.props.classes.button} id='imageButton' variant='contained' size='small' color='primary' fileType='image/*' handlefile={this.handleImageChange.bind(this)}>
               Upload Image
             </FileUploadButton>
-            <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={this.saveRecipe.bind(this)} >
+            <Button className={this.props.classes.button} variant='contained' size='small' color='primary' onClick={() => { this.saveRecipe() }} >
               Save Recipe
             </Button>
           </div>

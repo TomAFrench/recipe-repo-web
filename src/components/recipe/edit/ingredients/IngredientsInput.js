@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 
 import IngredientEntry from './IngredientEntry'
 
@@ -11,51 +10,54 @@ const styles = (theme) => ({})
 const ingredientInitialState = {
   quantity: 0,
   unit: '',
-  ingredient: ''
+  ingredient: '',
+  note: ''
 }
 
 class IngredientsInput extends React.Component {
   componentDidMount () {
     // Always ensure that there is at least one IngredientEntry
     if (this.props.ingredients.length === 0) {
-      this.handleAddIngredient()
+      this.handleAddIngredient(this.props)
     }
   }
 
   componentWillReceiveProps (newProps) {
     // Always ensure that there is at least one IngredientEntry
     if (newProps.ingredients.length === 0) {
-      this.handleAddIngredient()
+      this.handleAddIngredient(newProps)
+    } else if (newProps.ingredients[newProps.ingredients.length - 1].ingredient !== '') {
+      this.handleAddIngredient(newProps)
     }
   }
 
-  handleAddIngredient () {
-    var ingredientsCopy = this.props.ingredients
+  handleAddIngredient (props) {
+    var ingredientsCopy = JSON.parse(JSON.stringify(props.ingredients))
+
     ingredientsCopy.push(ingredientInitialState)
-    this.props.updateIngredients(ingredientsCopy)
+    props.updateIngredients(ingredientsCopy)
   }
 
   handleDeleteIngredient (key) {
     // Filters out ingredient based on its key value
-    var ingredientsCopy = this.props.ingredients
+    var ingredientsCopy = JSON.parse(JSON.stringify(this.props.ingredients))
     ingredientsCopy.splice(key, 1)
     this.props.updateIngredients(ingredientsCopy)
   }
 
   handleChange (key, ingredient) {
-    var ingredientsCopy = this.props.ingredients
+    var ingredientsCopy = JSON.parse(JSON.stringify(this.props.ingredients))
     ingredientsCopy.splice(key, 1, ingredient)
     this.props.updateIngredients(ingredientsCopy)
   }
 
   renderIngredients () {
-    console.log(this.props.ingredients)
     const ingredientEntries = this.props.ingredients.map((ingredient, key) =>
       <IngredientEntry
         key={key}
         values={ingredient}
-        handleChange={this.handleChange.bind(this, key)}
-        onClick={this.handleDeleteIngredient.bind(this, key)}
+        handleChange={(ingredient) => { this.handleChange(key, ingredient) }}
+        onClick={() => { this.handleDeleteIngredient(key) }}
         lastItem={false}
       />
     )
@@ -65,8 +67,7 @@ class IngredientsInput extends React.Component {
       <IngredientEntry
         key={lastKey}
         values={lastIngredient}
-        handleChange={this.handleChange.bind(this, lastKey)}
-        onClick={this.handleAddIngredient.bind(this)}
+        handleChange={(event) => { this.handleChange(lastKey, event) }}
         lastItem
       />
     )
@@ -76,11 +77,6 @@ class IngredientsInput extends React.Component {
   render () {
     return (
       <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <Typography variant='subtitle1' color='textSecondary' inline='true'>
-            Ingredients
-          </Typography>
-        </Grid>
         {this.renderIngredients()}
       </Grid>
     )
