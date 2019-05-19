@@ -13,6 +13,7 @@ import FileUploadButton from './FileUploadButton'
 import IngredientsInput from './ingredients/IngredientsInput'
 import { RecipeAPI } from '../../../utils'
 import InstructionsInput from './InstructionsInput'
+import ScrapeDialog from './ScrapeDialog'
 
 const styles = (theme) => ({
   layout: {
@@ -70,6 +71,7 @@ class RecipeInput extends React.Component {
       }
     } else {
       this.state = {
+        open: false,
         recipe: {
           name: '',
           sourceName: '',
@@ -89,6 +91,12 @@ class RecipeInput extends React.Component {
       })
     }
     fileReader.readAsText(event.target.files[0])
+  }
+
+  async handleScrapeRecipe (url) {
+    const apiWrapper = new RecipeAPI()
+    const res = await apiWrapper.scrapeURL(url)
+    this.setState({ recipe: res.data, open: false })
   }
 
   handleRecipeChange (event) {
@@ -150,6 +158,11 @@ class RecipeInput extends React.Component {
           src={imageUrl}
           alt=''
           className={this.props.classes.mainImage}
+        />
+        <ScrapeDialog
+          open={this.state.open}
+          handleClose={() => { this.setState({ open: false }) }}
+          onConfirmation={this.handleScrapeRecipe.bind(this)}
         />
         <Paper className={this.props.classes.paper}>
           <Typography variant='h6' gutterBottom>
@@ -332,6 +345,10 @@ class RecipeInput extends React.Component {
             <FileUploadButton className={this.props.classes.button} id='importButton' variant='contained' size='small' color='primary' fileType='application/json' handlefile={this.handleImportRecipe.bind(this)}>
               Import Recipe
             </FileUploadButton>
+            { typeof this.props.initalRecipe === 'undefined' && <Button className={this.props.classes.button} id='importButton' variant='contained' size='small' color='primary' fileType='application/json' onClick={() => { this.setState({ open: true }) }}>
+              Scrape Recipe
+            </Button>
+            }
             <FileUploadButton className={this.props.classes.button} id='imageButton' variant='contained' size='small' color='primary' fileType='image/*' handlefile={this.handleImageChange.bind(this)}>
               Upload Image
             </FileUploadButton>

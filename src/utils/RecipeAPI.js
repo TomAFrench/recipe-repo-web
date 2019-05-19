@@ -42,6 +42,16 @@ class RecipeAPIWrapper {
   async deleteRecipe (recipeID) {
     return axios.delete(this.API_URL + '/recipes/' + recipeID)
   }
+
+  async scrapeURL (url) {
+    return axios.get(
+      this.API_URL + '/scrape',
+      {
+        params: {
+          url: url
+        }
+      })
+  }
 }
 
 export default RecipeAPIWrapper

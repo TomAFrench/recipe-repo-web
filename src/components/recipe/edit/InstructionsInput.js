@@ -11,24 +11,25 @@ class InstructionsInput extends React.Component {
   componentDidMount () {
     // Always ensure that there is at least one step
     if (this.props.instructions.length === 0) {
-      this.handleAddStep()
+      this.handleAddStep(this.props)
     }
   }
 
   componentWillReceiveProps (newProps) {
     // Always ensure that there is at least one step
     if (newProps.instructions.length === 0) {
-      this.handleAddStep()
+      this.handleAddStep(newProps)
     }
+    // Ensure there is always a new empty step to fill
     if (newProps.instructions[newProps.instructions.length - 1] !== '') {
-      this.handleAddStep()
+      this.handleAddStep(newProps)
     }
   }
 
-  handleAddStep () {
-    var instructionsCopy = this.props.instructions
+  handleAddStep (props) {
+    var instructionsCopy = props.instructions
     instructionsCopy.push('')
-    this.props.updateInstructions(instructionsCopy)
+    props.updateInstructions(instructionsCopy)
   }
 
   handleDeleteStep (key) {
